@@ -1,0 +1,39 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FrugalFoxBudgetApp.Views.LoginPage"
+             Title="Login">
+    <ContentPage.Content>
+        <ScrollView>
+            <VerticalStackLayout Padding="30" Spacing="15">
+                <!-- Heading -->
+                <Label Text="Welcome Back!" 
+                       FontSize="24" 
+                       HorizontalOptions="Center" />
+
+                <!-- Email Entry -->
+                <Label Text="Email" />
+                <Entry x:Name="EmailEntry"
+                       Placeholder="Enter your email"
+                       Keyboard="Email" 
+                       Text="{Binding Email}" />
+
+                <!-- Password Entry -->
+                <Label Text="Password" />
+                <Entry x:Name="PasswordEntry"
+                       Placeholder="Enter your password"
+                       IsPassword="True"
+                       Text="{Binding Password}" />
+
+                <!-- Login Button -->
+                <Button Text="Log In" 
+                        Command="{Binding LoginCommand}" />
+
+                <!-- Optionally, link to create account -->
+                <Button Text="Don't have an account? Create one"
+                        Command="{Binding NavigateToCreateAccountCommand}"
+                        BackgroundColor="Transparent"
+                        TextColor="Blue" />
+            </VerticalStackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
