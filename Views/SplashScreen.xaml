@@ -4,6 +4,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FrugalFoxBudgetApp.Views.SplashScreen">
     <ContentPage.Content>
-        
+        <Grid BackgroundColor="#ffffff">
+            <!-- Centered logo or loading animation -->
+            <Image Source="frugal_fox_full.png"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" Aspect="AspectFit" />
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

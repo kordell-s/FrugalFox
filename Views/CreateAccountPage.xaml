@@ -2,8 +2,60 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FrugalFoxBudgetApp.Views.CreateAccountPage">
+             x:Class="FrugalFoxBudgetApp.Views.CreateAccountPage"
+             Title="Create Account">
     <ContentPage.Content>
-        
+        <ScrollView>
+            <VerticalStackLayout Padding="30" Spacing="15">
+                <!-- Heading -->
+                <Label Text="Create Your Account" 
+                       FontSize="24" 
+                       HorizontalOptions="Center" />
+
+                <!-- First Name -->
+                <Label Text="First Name" />
+                <Entry Placeholder="Enter your first name" 
+                       Text="{Binding FirstName}" />
+                
+                <!-- Last Name -->
+                <Label Text="Last Name" />
+                <Entry Placeholder="Enter your last name" 
+                       Text="{Binding LastName}" />
+
+                <!-- Email -->
+                <Label Text="Email" />
+                <Entry Placeholder="Enter your email" 
+                       Keyboard="Email" 
+                       Text="{Binding Email}" />
+
+                <!-- Password -->
+                <Label Text="Password" />
+                <Entry Placeholder="Enter your password" 
+                       IsPassword="True" 
+                       Text="{Binding Password}" />
+
+                <!-- Confirm Password -->
+                <Label Text="Confirm Password" />
+                <Entry Placeholder="Re-enter your password" 
+                       IsPassword="True" 
+                       Text="{Binding ConfirmPassword}" />
+                
+                <!-- Error Message (simple approach) -->
+                <Label x:Name="ErrorLabel"
+                       TextColor="Red"
+                       IsVisible="False" />
+
+                <!-- Create Account Button -->
+                <Button Text="Create Account"
+                        Command="{Binding CreateAccountCommand}" 
+                        BackgroundColor="#EA4337" />
+
+                <!-- Link to Login-->
+                <Button Text="Already have an account? Log In"
+                        Command="{Binding NavigateToLoginCommand}"
+                        BackgroundColor="Transparent"
+                        TextColor="#080203" />
+            </VerticalStackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

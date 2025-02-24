@@ -12,27 +12,31 @@
 
                 <!-- Email Entry -->
                 <Label Text="Email" />
-                <Entry x:Name="EmailEntry"
-                       Placeholder="Enter your email"
+                <Entry Placeholder="Enter your email"
                        Keyboard="Email" 
                        Text="{Binding Email}" />
 
                 <!-- Password Entry -->
                 <Label Text="Password" />
-                <Entry x:Name="PasswordEntry"
-                       Placeholder="Enter your password"
+                <Entry Placeholder="Enter your password"
                        IsPassword="True"
                        Text="{Binding Password}" />
+                       
+                <!-- Error Message -->
+                <Label Text="{Binding ErrorMessage}"
+                       TextColor="Red"
+                       IsVisible="{Binding IsErrorVisible}" />
 
                 <!-- Login Button -->
                 <Button Text="Log In" 
-                        Command="{Binding LoginCommand}" />
+                        Command="{Binding LoginCommand}"
+                        BackgroundColor="#EA4337" />
 
-                <!-- Optionally, link to create account -->
+                <!-- Link to create account -->
                 <Button Text="Don't have an account? Create one"
                         Command="{Binding NavigateToCreateAccountCommand}"
                         BackgroundColor="Transparent"
-                        TextColor="Blue" />
+                        TextColor="#080203" />
             </VerticalStackLayout>
         </ScrollView>
     </ContentPage.Content>
