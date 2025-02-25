@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Transactions;
 using SQLite;
 
@@ -9,39 +10,25 @@ public class User
 {
     [PrimaryKey]
     public int UserId { get; set; }
+  
+    [Required, SQLite.MaxLength(100)]
     public string Email { get; set; }
     public string Password { get; set; }
+    
+    [Required, SQLite.MaxLength(50)]
     public string FirstName { get; set; }
+    
+    [Required, SQLite.MaxLength(50)]
     public string LastName { get; set; }
+    
+    //Password we're storing
+    [Required]
+    public string PasswordHash { get; set; }
+    public DateTime CreatedDate { get; set; }
     
     public List<Transaction> Transactions { get; set; } = new List<Transaction>();
     public List<Budget> Budgets { get; set; } = new List<Budget>();
     
-    // Model methods for business logic
-    public bool IsValidForRegistration(string confirmPassword, out string errorMessage)
-    {
-        if (string.IsNullOrEmpty(FirstName) || string.IsNullOrEmpty(LastName) || 
-            string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password))
-        {
-            errorMessage = "Please fill all fields";
-            return false;
-        }
-        
-        if (Password != confirmPassword)
-        {
-            errorMessage = "Passwords do not match";
-            return false;
-        }
-        
-        errorMessage = string.Empty;
-        return true;
-    }
+    public string FullName => $"{FirstName} {LastName}";
     
-    // This would handle the actual account creation in a real app
-    public bool CreateAccount()
-    {
-        // In a real app, this would save to a database
-        // For now, we'll just simulate success
-        return true;
-    }
 }

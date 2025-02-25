@@ -1,15 +1,26 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using FrugalFoxBudgetApp.Database;
+using FrugalFoxBudgetApp.Models;
 using Microsoft.Maui.Controls;
 
 namespace FrugalFoxBudgetApp.ViewModels
 {
     public class LoginPageViewModel : INotifyPropertyChanged
     {
+        private readonly FrugalFoxDB Database;
         private string email;
         private string password;
         private string errorMessage;
+        
+        public LoginPageViewModel()
+        {
+            Database = new FrugalFoxDB();
+            LoginCommand = new Command(OnLogin);
+            NavigateToCreateAccountCommand = new Command(OnNavigateToCreateAccount);
+        }
+
 
         public string Email
         {
@@ -46,13 +57,7 @@ namespace FrugalFoxBudgetApp.ViewModels
 
         public ICommand LoginCommand { get; }
         public ICommand NavigateToCreateAccountCommand { get; }
-
-        public LoginPageViewModel()
-        {
-            LoginCommand = new Command(OnLogin);
-            NavigateToCreateAccountCommand = new Command(OnNavigateToCreateAccount);
-        }
-
+        
         private async void OnLogin()
         {
             // Clear previous error
@@ -65,25 +70,32 @@ namespace FrugalFoxBudgetApp.ViewModels
                 return;
             }
 
+         
+
             try
             {
-                // Here you would typically:
-                // 1. Create a User model from the credentials
-                // 2. Validate the credentials against a database or API
-
-                // Simulate authentication for now
-                bool isAuthenticated = Email.Contains("@") && Password.Length >= 6;
-
-                if (isAuthenticated)
-                {
-                    await Application.Current.MainPage.DisplayAlert("Success", "Login successful.", "OK");
-                    // Navigate to the main/home page of the app
-                    await Shell.Current.GoToAsync("//DashboardPage");
-                }
-                else
+                ErrorMessage = string.Empty;
+                
+                //getting user by email
+                User user = Database.GetUserByEmail(Email);
+                if (user == null)
                 {
                     ErrorMessage = "Invalid email or password.";
+                    return;
                 }
+                
+                //verify password
+                bool passwordValid = BCrypt.Net.BCrypt.Verify(Password, user.PasswordHash);
+                if (!passwordValid)
+                {
+                    ErrorMessage = "Invalid password.";
+                    return;
+                }
+                
+                App.CurrentUser = user; //storing logged in user
+                
+                //navigate to dashboard
+                await Shell.Current.GoToAsync($"//{nameof(DashboardPage)}");
             }
             catch (Exception ex)
             {

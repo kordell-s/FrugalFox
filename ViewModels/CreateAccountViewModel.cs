@@ -4,17 +4,22 @@ using System.Windows.Input;
 using FrugalFoxBudgetApp.Models;
 using FrugalFoxBudgetApp.Views;
 using Microsoft.Maui.Controls;
+using FrugalFoxBudgetApp.Database;
+using Microsoft.Win32.SafeHandles;
 
 namespace FrugalFoxBudgetApp.ViewModels
 {
    public class CreateAccountViewModel : INotifyPropertyChanged
-{
+   {
+       
+       private readonly FrugalFoxDB Database;
     private User user;
     private string confirmPassword;
     private string errorMessage;
     
     public CreateAccountViewModel()
     {
+        Database = new FrugalFoxDB();
         user = new User();
         CreateAccountCommand = new Command(OnCreateAccount);
         NavigateToLoginCommand = new Command(OnNavigateToLogin);
@@ -82,27 +87,74 @@ namespace FrugalFoxBudgetApp.ViewModels
     
     public ICommand CreateAccountCommand { get; }
     public ICommand NavigateToLoginCommand { get; }
-    
+
     private async void OnCreateAccount()
     {
         // Use the model's validation method
-        if (!user.IsValidForRegistration(ConfirmPassword, out string error))
+        if (string.IsNullOrWhiteSpace(FirstName))
         {
-            await Application.Current.MainPage.DisplayAlert("Error", error, "OK");
+            ErrorMessage = "First name is required.";
             return;
         }
-        
-        // Try to create the account
-        bool success = user.CreateAccount();
-        
-        if (success)
+
+        if (string.IsNullOrWhiteSpace(LastName))
         {
-            await Application.Current.MainPage.DisplayAlert("Account", "Account created successfully", "OK");
-            await Shell.Current.GoToAsync("//LoginPage");
+            ErrorMessage = "Last name is required.";
+            return;
         }
-        else
+
+        if (string.IsNullOrWhiteSpace(Email))
         {
-            await Application.Current.MainPage.DisplayAlert("Error", "Failed to create account", "OK");
+            ErrorMessage = "Email is required.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(Password))
+        {
+            ErrorMessage = "Password is required.";
+            return;
+        }
+
+        if (Password != ConfirmPassword)
+        {
+            ErrorMessage = "Passwords don't match.";
+            return;
+        }
+
+        try
+        {
+            //checking if email/account already exists
+            var existingUser = Database.GetUserByEmail(Email);
+            if (existingUser != null)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", $"Email {Email} already exists.", "OK");
+                return;
+            }
+
+            //setting creation date
+            user.CreatedDate = DateTime.Now;
+
+            //Hashing password
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(Password);
+            user.Password = null;
+
+            //insert into database
+            int result = Database.CreateUser(user);
+            if (result > 0)
+            {
+                await Application.Current.MainPage.DisplayAlert("Success", $"User {Email} has been created", "OK");
+                await Shell.Current.GoToAsync($"//{nameof(DashboardPage)}");
+            }
+
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Failed to create account", "OK");
+            }
+
+        }
+    catch (Exception ex)
+        {
+            await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
         }
     }
     

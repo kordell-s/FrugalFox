@@ -45,16 +45,21 @@ public class FrugalFoxDB
         return insertStatus;
     }
 
-    public int updateUser(User newUser)
+    public int UpdateUser(User newUser)
     {
         var updateStatus = DatabaseConnection.Update(newUser);
         return updateStatus;
     }
 
-    public int deleteUser(User newUser)
+    public int DeleteUser(User newUser)
     {
         var deleteStatus = DatabaseConnection.Delete(newUser);
         return deleteStatus;
+    }
+
+    public User GetUserByEmail(string email)
+    {
+        return DatabaseConnection.Table<User>().FirstOrDefault(u => u.Email == email);
     }
     
     //Budget Functions
@@ -124,7 +129,7 @@ public class FrugalFoxDB
         return updateStatus;
     }
 
-    public int deleteTransaction(Transaction transaction)
+    public int DeleteTransaction(Transaction transaction)
     {
         var deleteStatus = DatabaseConnection.Delete(transaction);
         return deleteStatus;
