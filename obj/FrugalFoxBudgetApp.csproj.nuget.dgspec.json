@@ -73,6 +73,10 @@
               "target": "Package",
               "version": "[8.0.12, )",
               "autoReferenced": true
+            },
+            "sqlite-net-pcl": {
+              "target": "Package",
+              "version": "[1.9.172, )"
             }
           },
           "imports": [
@@ -89,6 +93,22 @@
           "downloadDependencies": [
             {
               "name": "Microsoft.Android.Ref.34",
+              "version": "[34.0.147, 34.0.147]"
+            },
+            {
+              "name": "Microsoft.Android.Runtime.34.android-arm",
+              "version": "[34.0.147, 34.0.147]"
+            },
+            {
+              "name": "Microsoft.Android.Runtime.34.android-arm64",
+              "version": "[34.0.147, 34.0.147]"
+            },
+            {
+              "name": "Microsoft.Android.Runtime.34.android-x64",
+              "version": "[34.0.147, 34.0.147]"
+            },
+            {
+              "name": "Microsoft.Android.Runtime.34.android-x86",
               "version": "[34.0.147, 34.0.147]"
             },
             {
@@ -130,6 +150,10 @@
               "target": "Package",
               "version": "[8.0.12, )",
               "autoReferenced": true
+            },
+            "sqlite-net-pcl": {
+              "target": "Package",
+              "version": "[1.9.172, )"
             }
           },
           "imports": [
@@ -191,6 +215,10 @@
               "target": "Package",
               "version": "[8.0.12, )",
               "autoReferenced": true
+            },
+            "sqlite-net-pcl": {
+              "target": "Package",
+              "version": "[1.9.172, )"
             }
           },
           "imports": [
@@ -215,6 +243,10 @@
               "version": "[18.0.8319, 18.0.8319]"
             },
             {
+              "name": "Microsoft.MacCatalyst.Runtime.maccatalyst-x64.net8.0_18.0",
+              "version": "[18.0.8319, 18.0.8319]"
+            },
+            {
               "name": "Microsoft.NETCore.App.Ref",
               "version": "[8.0.12, 8.0.12]"
             }
@@ -231,7 +263,22 @@
         }
       },
       "runtimes": {
+        "android-arm": {
+          "#import": []
+        },
+        "android-arm64": {
+          "#import": []
+        },
+        "android-x64": {
+          "#import": []
+        },
+        "android-x86": {
+          "#import": []
+        },
         "iossimulator-x64": {
+          "#import": []
+        },
+        "maccatalyst-x64": {
           "#import": []
         }
       }

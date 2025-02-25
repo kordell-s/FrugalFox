@@ -30,12 +30,6 @@ build_metadata.AdditionalFiles.ManifestResourceName = FrugalFoxBudgetApp.AppShel
 build_metadata.AdditionalFiles.TargetPath = AppShell.xaml
 build_metadata.AdditionalFiles.RelativePath = AppShell.xaml
 
-[/Users/admin/RiderProjects/FrugalFox/FrugalFoxBudgetApp/DashboardPage.xaml]
-build_metadata.AdditionalFiles.GenKind = Xaml
-build_metadata.AdditionalFiles.ManifestResourceName = FrugalFoxBudgetApp.DashboardPage.xaml
-build_metadata.AdditionalFiles.TargetPath = DashboardPage.xaml
-build_metadata.AdditionalFiles.RelativePath = DashboardPage.xaml
-
 [/Users/admin/RiderProjects/FrugalFox/FrugalFoxBudgetApp/Resources/Styles/Colors.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = FrugalFoxBudgetApp.Resources.Styles.Colors.xaml
@@ -53,6 +47,12 @@ build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = FrugalFoxBudgetApp.Views.CreateAccountPage.xaml
 build_metadata.AdditionalFiles.TargetPath = Views/CreateAccountPage.xaml
 build_metadata.AdditionalFiles.RelativePath = Views/CreateAccountPage.xaml
+
+[/Users/admin/RiderProjects/FrugalFox/FrugalFoxBudgetApp/Views/DashboardPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = FrugalFoxBudgetApp.Views.DashboardPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views/DashboardPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views/DashboardPage.xaml
 
 [/Users/admin/RiderProjects/FrugalFox/FrugalFoxBudgetApp/Views/LoginPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml

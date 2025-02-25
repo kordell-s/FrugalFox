@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FrugalFoxBudgetApp.DashboardPage">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="20" Spacing="20" >
+                <!-- Heading -->
+                <Label Text="{Binding Greeting}" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center"/>
+                
+                <!-- Budget -->
+                <Frame BackgroundColor="LightGray" CornerRadius="10" Padding="15">
+                    <StackLayout Spacing="10">
+                        <Label Text="Monthly Budget" FontSize="Medium" HorizontalOptions="Center"></Label>
+                        
+                        <Label Text="{Binding MonthlyBudget, StringFormat='{}{0:C}'}" FontSize="24" HorizontalOptions="Center" FontAttributes="Bold"/>
+                        
+                        <Label Text="{Binding BudgetStatusText}" HorizontalOptions="Center"/>
+                    </StackLayout>
+                    </Frame>
+                
+                <!-- Recent Transactions -->
+                <Label Text="Recent Transactions" FontSize="Medium"></Label>
+                <CollectionView ItemsSource="{Binding RecentTransactions}" SelectionMode = "None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame CornerRadius="8" Padding="10" Margin="5">
+                                <StackLayout Spacing="5">
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding CategoryName}" FontAttributes="Bold"></Label>
+                                        <Label Text="{Binding Amount, StringFormat='{}{0:C}'}" HorizontalOptions="EndAndExpand" />
+                                    </StackLayout>
+                                    <Label Text="{Binding Date, StringFormat ='{0:MM dd}'}" FontSize="Small" TextColor="Gray"></Label>
+                                </StackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                
+                <!-- Quick Actions -->
+                <Button Text="Add Transaction" Command="{Binding AddTransactionCommand}"></Button>
+                <Button Text="View Reports" Command="{Binding ViewReportsCommand}"></Button>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

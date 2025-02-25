@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FrugalFoxBudgetApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+fee8f438fb87618d6bb1a2ec7f6bdc3085c40aa7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+198ab0dc0520b58e026eb64ced7ae05bcd1217ca")]
 [assembly: System.Reflection.AssemblyProductAttribute("FrugalFoxBudgetApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FrugalFoxBudgetApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
