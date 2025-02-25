@@ -1,9 +1,13 @@
 using System.Transactions;
+using SQLite;
 
 namespace FrugalFoxBudgetApp.Models;
 
+
+[SQLite.Table("Users")]
 public class User
 {
+    [PrimaryKey]
     public int UserId { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }

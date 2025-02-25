@@ -1,5 +1,7 @@
 namespace FrugalFoxBudgetApp.Models;
 
+
+[SQLite.Table("Transactions")]
 public class Transaction
 {
     public int TransactionId { get; set; }
