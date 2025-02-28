@@ -11,7 +11,6 @@ namespace FrugalFoxBudgetApp.ViewModels
 {
    public class CreateAccountViewModel : INotifyPropertyChanged
    {
-       
        private readonly FrugalFoxDB Database;
     private User user;
     private string confirmPassword;

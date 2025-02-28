@@ -13,4 +13,5 @@ public class Transaction
     
     public User User { get; set; } = null!;
     public Category Category { get; set; } = null!;
+    public string CategoryName { get; set; } = null!;
 }

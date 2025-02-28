@@ -40,6 +40,7 @@
                 
                 <!-- Quick Actions -->
                 <Button Text="Add Transaction" Command="{Binding AddTransactionCommand}"></Button>
+                <Button Text="Set Budget" Command="{Binding SetBudgetCommand}"></Button>
                 <Button Text="View Reports" Command="{Binding ViewReportsCommand}"></Button>
             </StackLayout>
         </ScrollView>

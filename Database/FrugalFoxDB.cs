@@ -37,6 +37,11 @@ public class FrugalFoxDB
         
     }
     //Define Utility Functions
+    
+    public List<T> Query<T>(string query, params object[] args) where T : new()
+    {
+        return DatabaseConnection.Query<T>(query, args);
+    }
         
     //User functions
     public int CreateUser(User newUser)
@@ -77,8 +82,8 @@ public class FrugalFoxDB
 
     public Budget GetCurrentBudget(int userId)
     {
-        var select = DatabaseConnection.Table<Budget>().Where(b => b.UserId == userId);
-        return select.FirstOrDefault();
+        var today = DateTime.Today;
+        return DatabaseConnection.Table<Budget>().Where(b => b.UserId == userId && b.StartDate <= today && b.EndDate >= today).FirstOrDefault();
         
     }
     
