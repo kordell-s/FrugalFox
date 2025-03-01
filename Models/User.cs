@@ -8,7 +8,7 @@ namespace FrugalFoxBudgetApp.Models;
 [SQLite.Table("Users")]
 public class User
 {
-    [PrimaryKey]
+    [PrimaryKey, AutoIncrement]
     public int UserId { get; set; }
   
     [Required, SQLite.MaxLength(100)]

@@ -12,6 +12,6 @@ public partial class CreateAccountPage : ContentPage
     public CreateAccountPage()
     {
         InitializeComponent();
-        this.BindingContext = new CreateAccountViewModel();
+        BindingContext = new CreateAccountViewModel();
     }
 }

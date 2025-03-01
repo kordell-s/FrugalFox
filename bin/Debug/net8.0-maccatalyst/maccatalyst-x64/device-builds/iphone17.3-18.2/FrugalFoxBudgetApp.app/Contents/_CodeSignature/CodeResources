@@ -12,10 +12,6 @@
 		<data>
 		X6gjdTg3cbKSWYv3ji+zpRq9cEk=
 		</data>
-		<key>Resources/MauiInfo.plist</key>
-		<data>
-		iEtuUGCV6JM3gxS/pO33swhmpp8=
-		</data>
 		<key>Resources/MonoTouchDebugConfiguration.txt</key>
 		<data>
 		oowkf1sL6T19nanXUObgmuayWqM=
@@ -66,14 +62,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			XZUq07Wzi2dH+9Al+vMt7Gws9KXnfLSbXqEEsW30ols=
+			tetjokBT1Cy7dgcbrlaJ/81jm8rcHWaY/7ZacAAz5KU=
 			</data>
 		</dict>
 		<key>MonoBundle/FrugalFoxBudgetApp.pdb</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			AIJYJI0zwemj7CMkGqhCVAjAx6D6+2jnmOPKoL9Qeqs=
+			+XDYvFY4MVFygge47WjVy3hzDLEylkBN66kqyiyINfs=
 			</data>
 		</dict>
 		<key>MonoBundle/Microsoft.CSharp.dll</key>
@@ -1677,13 +1673,6 @@
 			<key>hash2</key>
 			<data>
 			8wZ69kYuQhOJ2dg9rxDun1NjkZHW6mDAJVhuULwg8pk=
-			</data>
-		</dict>
-		<key>Resources/MauiInfo.plist</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			tx0KXqEC+DvcCGyogQTEQWHcCWJYYqH24NtPwhpQEjo=
 			</data>
 		</dict>
 		<key>Resources/MonoTouchDebugConfiguration.txt</key>

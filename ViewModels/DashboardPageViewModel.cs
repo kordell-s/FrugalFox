@@ -6,6 +6,7 @@ using Microsoft.Maui.Controls;
 using System;
 using FrugalFoxBudgetApp.Database;
 using FrugalFoxBudgetApp.Models;
+using FrugalFoxBudgetApp.Views;
 using SQLite;
 
 namespace FrugalFoxBudgetApp.ViewModels;
@@ -59,7 +60,7 @@ public class DashboardPageViewModel:INotifyPropertyChanged
             if (budgetStatus != value)
             {
                 budgetStatus = value;
-                OnPropertyChanged(nameof(MonthlyBudget));
+                OnPropertyChanged(nameof(BudgetStatus));
             }
         }
     }
@@ -85,29 +86,13 @@ public class DashboardPageViewModel:INotifyPropertyChanged
     
     //constructor
 
-    public DashboardPageViewModel()
+    public  DashboardPageViewModel()
     {
         Database = new FrugalFoxDB();
-        userID = userID;
+        userID = App.CurrentUser.UserId;
+        var user = Database.GetUserByEmail(App.CurrentUser.Email);
+        Greeting = user != null ? $"Hello, {user.FirstName}!" : "User not found.";
 
-        if (App.CurrentUser != null)
-        {
-            // Retrieve the full user information using GetUserByEmail method.
-            var user = Database.GetUserByEmail(App.CurrentUser.Email);
-            if (user != null)
-            {
-                Greeting = $"Hello, {user.FirstName}!";
-            }
-            else
-            {
-                Greeting = "User not found.";
-            }
-        }
-        else
-        {
-            Greeting = "Please Login";
-            return;
-        }
 
 
         LoadCurrentBudget();
@@ -195,7 +180,7 @@ public class DashboardPageViewModel:INotifyPropertyChanged
     {
         try
         { 
-            await Shell.Current.GoToAsync("AddTransactionPage");
+            await Shell.Current.GoToAsync("AddViewReportsPage");
         }catch (Exception ex)
 
         {
@@ -207,7 +192,7 @@ public class DashboardPageViewModel:INotifyPropertyChanged
     {
         try
          {
-           await Shell.Current.GoToAsync("AddTransactionPage");
+           await Shell.Current.GoToAsync("SetBudgetPage");
         }catch (Exception ex)
 
          {

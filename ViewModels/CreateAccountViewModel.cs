@@ -10,7 +10,7 @@ using Microsoft.Win32.SafeHandles;
 namespace FrugalFoxBudgetApp.ViewModels
 {
    public class CreateAccountViewModel : INotifyPropertyChanged
-   {
+   { 
        private readonly FrugalFoxDB Database;
     private User user;
     private string confirmPassword;
@@ -129,6 +129,7 @@ namespace FrugalFoxBudgetApp.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", $"Email {Email} already exists.", "OK");
                 return;
             }
+            
 
             //setting creation date
             user.CreatedDate = DateTime.Now;
@@ -141,8 +142,10 @@ namespace FrugalFoxBudgetApp.ViewModels
             int result = Database.CreateUser(user);
             if (result > 0)
             {
+                //setting the newly created user as the current user
+                App.CurrentUser = user;
                 await Application.Current.MainPage.DisplayAlert("Success", $"User {Email} has been created", "OK");
-                await Shell.Current.GoToAsync($"//{nameof(DashboardPage)}");
+                await Shell.Current.GoToAsync(nameof(DashboardPage));
             }
 
             else
@@ -159,7 +162,14 @@ namespace FrugalFoxBudgetApp.ViewModels
     
     private async void OnNavigateToLogin()
     {
-        await Shell.Current.GoToAsync("//LoginPage");
+        try
+        {
+            await Shell.Current.GoToAsync(nameof(LoginPage));
+        }
+        catch (Exception ex)
+        {
+            await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
+        }
     }
     
     public event PropertyChangedEventHandler PropertyChanged;
