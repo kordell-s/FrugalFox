@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FrugalFoxBudgetApp.Views.SetBudgetPage">
+    <ContentPage.Content>
+        <StackLayout Padding="20" Spacing="15">
+            <Label Text="Set Budget" FontSize="24" HorizontalOptions="Center" />
+            <Entry Placeholder="Monthly Budget" Text="{Binding MonthlyBudget}" Keyboard="Numeric" />
+            <DatePicker Date="{Binding StartDate}" />
+            <DatePicker Date="{Binding EndDate}" />
+            <Button Text="Save Budget" Command="{Binding SaveBudgetCommand}" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

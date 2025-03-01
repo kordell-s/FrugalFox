@@ -26,7 +26,9 @@ public class User
     public string PasswordHash { get; set; }
     public DateTime CreatedDate { get; set; }
     
+    [Ignore]
     public List<Transaction> Transactions { get; set; } = new List<Transaction>();
+    [Ignore]
     public List<Budget> Budgets { get; set; } = new List<Budget>();
     
     public string FullName => $"{FirstName} {LastName}";

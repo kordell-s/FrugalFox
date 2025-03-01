@@ -1,3 +1,5 @@
+using SQLite;
+
 namespace FrugalFoxBudgetApp.Models;
 
 
@@ -9,5 +11,6 @@ public class Category
     public string Icon { get; set; }
     public string Color { get; set; }
     
+    [Ignore]
     public List<Transaction> Transactions { get; set; } = new List<Transaction>();
 }

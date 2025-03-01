@@ -1,3 +1,5 @@
+using SQLite;
+
 namespace FrugalFoxBudgetApp.Models;
 
 [SQLite.Table("Budgets")]
@@ -9,5 +11,6 @@ public class Budget
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public decimal CurrentSpent { get; set; }
+   [Ignore]
     public User User { get; set; } = null!;
 }

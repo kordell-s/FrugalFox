@@ -1,3 +1,5 @@
+using SQLite;
+
 namespace FrugalFoxBudgetApp.Models;
 
 
@@ -10,8 +12,9 @@ public class Transaction
     public decimal Amount { get; set; }
     public DateTime Date { get; set; }
     
-    
+    [Ignore]
     public User User { get; set; } = null!;
+    [Ignore]
     public Category Category { get; set; } = null!;
     public string CategoryName { get; set; } = null!;
 }

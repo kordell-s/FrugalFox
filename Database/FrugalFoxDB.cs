@@ -37,7 +37,6 @@ public class FrugalFoxDB
         
     }
     //Define Utility Functions
-    
     public List<T> Query<T>(string query, params object[] args) where T : new()
     {
         return DatabaseConnection.Query<T>(query, args);
@@ -118,6 +117,12 @@ public class FrugalFoxDB
     {
         var deleteStatus = DatabaseConnection.Delete(categoryId);
         return deleteStatus;
+    }
+
+    public Category GetCategoryById(int categoryId)
+    {
+        var select = DatabaseConnection.Table<Category>().Where(c => c.CategoryId == categoryId);
+        return select.FirstOrDefault();
     }
     
     //Transaction Functions

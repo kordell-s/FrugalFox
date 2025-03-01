@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FrugalFoxBudgetApp.Views.AddTransactionPage">
+    <ContentPage.Content>
+        <StackLayout Padding="20" Spacing="15">
+            <Label Text="Add Transaction" FontSize="24" HorizontalOptions="Center" />
+            <Entry Placeholder="Amount" Text="{Binding Amount}" Keyboard="Numeric" />
+            <DatePicker Date="{Binding TransactionDate}"></DatePicker>
+            <Picker Title="Select Category" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" ItemDisplayBinding="{Binding Name}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

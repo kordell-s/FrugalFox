@@ -12,6 +12,10 @@
 		<data>
 		X6gjdTg3cbKSWYv3ji+zpRq9cEk=
 		</data>
+		<key>Resources/MauiInfo.plist</key>
+		<data>
+		iEtuUGCV6JM3gxS/pO33swhmpp8=
+		</data>
 		<key>Resources/MonoTouchDebugConfiguration.txt</key>
 		<data>
 		oowkf1sL6T19nanXUObgmuayWqM=
@@ -51,18 +55,25 @@
 	</dict>
 	<key>files2</key>
 	<dict>
+		<key>MonoBundle/BCrypt.Net-Next.dll</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			EVufr/i5CaGgi2WzFQWOsYLAxMOnfBn81fTanaSdSmM=
+			</data>
+		</dict>
 		<key>MonoBundle/FrugalFoxBudgetApp.dll</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			glmptwpnDMcPjV0CuvCrZjlRO5cd4So/8Clbh0O90/g=
+			XZUq07Wzi2dH+9Al+vMt7Gws9KXnfLSbXqEEsW30ols=
 			</data>
 		</dict>
 		<key>MonoBundle/FrugalFoxBudgetApp.pdb</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			oj5RECzQJZFPMWVbrh+VIv59werrVgg8S3KUJAaRR9g=
+			AIJYJI0zwemj7CMkGqhCVAjAx6D6+2jnmOPKoL9Qeqs=
 			</data>
 		</dict>
 		<key>MonoBundle/Microsoft.CSharp.dll</key>
@@ -217,6 +228,34 @@
 			<key>hash2</key>
 			<data>
 			e6j1WuYikZTtXsVp3k798o6TKWAAZ2Ro8e9MRzcHxfs=
+			</data>
+		</dict>
+		<key>MonoBundle/SQLite-net.dll</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			/0h0FMSssyqe6OCqk97walP3tX35PS56JgVOGN+Fcj4=
+			</data>
+		</dict>
+		<key>MonoBundle/SQLitePCLRaw.batteries_v2.dll</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			kylPuIiR6IKN27UfH1K8VCl9n9pSQbikaTX+p10gtqM=
+			</data>
+		</dict>
+		<key>MonoBundle/SQLitePCLRaw.core.dll</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			l57cyQVqwG1fUrEtm3czsSF5FKtQvxI6sxLgJ+esV6U=
+			</data>
+		</dict>
+		<key>MonoBundle/SQLitePCLRaw.provider.e_sqlite3.dll</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			RwA/P9Qppbadb8bP0Wv82XkQMhcB5eeoiQYWQ8gdCGU=
 			</data>
 		</dict>
 		<key>MonoBundle/System.AppContext.dll</key>
@@ -1479,6 +1518,13 @@
 			mB+rfjUPmBvG4t0cXauTh5ZjZQC3ENXzkZ9SGH2KtCQ=
 			</data>
 		</dict>
+		<key>MonoBundle/libe_sqlite3.dylib</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			xdT638yOcEJSJOlDvF+a/vPh/yzcgxFhRV3a3mM+aI8=
+			</data>
+		</dict>
 		<key>MonoBundle/ms/Microsoft.Maui.Controls.resources.dll</key>
 		<dict>
 			<key>hash2</key>
@@ -1631,6 +1677,13 @@
 			<key>hash2</key>
 			<data>
 			8wZ69kYuQhOJ2dg9rxDun1NjkZHW6mDAJVhuULwg8pk=
+			</data>
+		</dict>
+		<key>Resources/MauiInfo.plist</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			tx0KXqEC+DvcCGyogQTEQWHcCWJYYqH24NtPwhpQEjo=
 			</data>
 		</dict>
 		<key>Resources/MonoTouchDebugConfiguration.txt</key>
