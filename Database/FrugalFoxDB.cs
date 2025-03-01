@@ -1,5 +1,7 @@
 using FrugalFoxBudgetApp.Models;
 using SQLite;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FrugalFoxBudgetApp.Database;
 
@@ -34,7 +36,38 @@ public class FrugalFoxDB
             CurrentState = e.Message;
         }
         
-        
+        SeedOrUpdateDefaultCategories();
+    }
+    
+    private void SeedOrUpdateDefaultCategories()
+    {
+        // Retrieve existing categories from the database.
+        var existingCategories = DatabaseConnection.Table<Category>().ToList();
+
+        // Define default categories.
+        var defaultCategories = new List<Category>
+        {
+            new Category { Name = "Food", Icon = "food_icon", Color = "#F39C12" },
+            new Category { Name = "Transport", Icon = "transport_icon", Color = "#27AE60" },
+            new Category { Name = "Entertainment", Icon = "entertainment_icon", Color = "#8E44AD" },
+            new Category { Name = "Utilities", Icon = "utilities_icon", Color = "#2980B9" }
+        };
+
+        // For each default category, insert if missing or update if it exists.
+        foreach (var defaultCat in defaultCategories)
+        {
+            if (!existingCategories.Any(c => c.Name == defaultCat.Name))
+            {
+                DatabaseConnection.Insert(defaultCat);
+            }
+            else
+            {
+                var existingCat = existingCategories.First(c => c.Name == defaultCat.Name);
+                existingCat.Icon = defaultCat.Icon;
+                existingCat.Color = defaultCat.Color;
+                DatabaseConnection.Update(existingCat);
+            }
+        }
     }
     //Define Utility Functions
     public List<T> Query<T>(string query, params object[] args) where T : new()

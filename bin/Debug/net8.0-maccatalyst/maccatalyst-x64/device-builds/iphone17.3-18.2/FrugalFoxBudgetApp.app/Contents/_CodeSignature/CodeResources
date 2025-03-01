@@ -51,6 +51,15 @@
 	</dict>
 	<key>files2</key>
 	<dict>
+		<key>Frameworks/libSkiaSharp.framework</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			6lvPsYPWAiY46L26t5bPLGFDr4U=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"ea5bcfb183d6022638e8bdbab796cf2c6143af85"</string>
+		</dict>
 		<key>MonoBundle/BCrypt.Net-Next.dll</key>
 		<dict>
 			<key>hash2</key>
@@ -62,14 +71,21 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			tetjokBT1Cy7dgcbrlaJ/81jm8rcHWaY/7ZacAAz5KU=
+			JlsSPg0oPA4ohUfNLoZMCX9NQE7RGCK5f70b6MKrr1c=
 			</data>
 		</dict>
 		<key>MonoBundle/FrugalFoxBudgetApp.pdb</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			+XDYvFY4MVFygge47WjVy3hzDLEylkBN66kqyiyINfs=
+			FQgxKSocc6YgwSdsbs6MBh1+6ulNvb8PTT2/Nu/HDfQ=
+			</data>
+		</dict>
+		<key>MonoBundle/Microcharts.Maui.dll</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			bDLOGv8pCsGdycJyoTmdAFU2r1+DYqeTv6cBh8Adr3M=
 			</data>
 		</dict>
 		<key>MonoBundle/Microsoft.CSharp.dll</key>
@@ -252,6 +268,34 @@
 			<key>hash2</key>
 			<data>
 			RwA/P9Qppbadb8bP0Wv82XkQMhcB5eeoiQYWQ8gdCGU=
+			</data>
+		</dict>
+		<key>MonoBundle/SkiaSharp.Views.Maui.Controls.dll</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			9W3BEL8xAG1L84uV3kQNXa8iwlVTAMTxQXAEOk56kIo=
+			</data>
+		</dict>
+		<key>MonoBundle/SkiaSharp.Views.Maui.Core.dll</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			llwJf39NEE+oQprZPP2N2SO5N25cnTsLAYGjowiEeEI=
+			</data>
+		</dict>
+		<key>MonoBundle/SkiaSharp.Views.iOS.dll</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			kpWHQGYwr7Z55A5NFOn7ZVqJt6RiQ5AvaYNyAs7+QUU=
+			</data>
+		</dict>
+		<key>MonoBundle/SkiaSharp.dll</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			YRmdxNjrAbUOKdByRm+8Eu9BKGY0eqqKpPUcbmWBdhY=
 			</data>
 		</dict>
 		<key>MonoBundle/System.AppContext.dll</key>

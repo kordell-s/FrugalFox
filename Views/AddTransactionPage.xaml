@@ -9,6 +9,10 @@
             <Entry Placeholder="Amount" Text="{Binding Amount}" Keyboard="Numeric" />
             <DatePicker Date="{Binding TransactionDate}"></DatePicker>
             <Picker Title="Select Category" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" ItemDisplayBinding="{Binding Name}"/>
+            <Button Text="Save Transaction"
+                    Command="{Binding SaveTransactionCommand}"
+                    BackgroundColor="#EA4337"
+                    TextColor="White" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

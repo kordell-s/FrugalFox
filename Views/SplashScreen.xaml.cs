@@ -20,4 +20,9 @@ public partial class SplashScreen : ContentPage
             return false; // Return false to stop the timer
         });
     }
+
+    async void OnSplashScreenComplete()
+    {
+        Application.Current.MainPage = new AppShell();
+    }
 }

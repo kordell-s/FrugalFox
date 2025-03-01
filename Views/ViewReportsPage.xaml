@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FrugalFoxBudgetApp.Views.ViewReportsPage">
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:charts="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
+    x:Class="FrugalFoxBudgetApp.Views.ViewReportsPage"
+    Title="Reports">
+    
     <ContentPage.Content>
-        <StackLayout Padding="20">
-            <Label Text="Reports" FontSize="24" HorizontalOptions="Center" />
-            <ListView ItemsSource="{Binding ReportItems}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextCell Text="{Binding Title}" Detail="{Binding Detail}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackLayout>
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="20">
+                <!-- Page Heading -->
+                <Label Text="Reports" FontSize="24" HorizontalOptions="Center" />
+
+                <!-- Pie Chart showing spending by category -->
+                <charts:ChartView Chart="{Binding ReportChart}" HeightRequest="300" />
+
+                <!-- List of Report Items (optional additional info) -->
+                <ListView ItemsSource="{Binding ReportItems}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextCell Text="{Binding Title}" Detail="{Binding Detail}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </VerticalStackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

@@ -142,10 +142,9 @@ namespace FrugalFoxBudgetApp.ViewModels
             int result = Database.CreateUser(user);
             if (result > 0)
             {
-                //setting the newly created user as the current user
-                App.CurrentUser = user;
+              
                 await Application.Current.MainPage.DisplayAlert("Success", $"User {Email} has been created", "OK");
-                await Shell.Current.GoToAsync(nameof(DashboardPage));
+                await Application.Current.MainPage.Navigation.PushAsync(new LoginPage());
             }
 
             else
@@ -164,7 +163,7 @@ namespace FrugalFoxBudgetApp.ViewModels
     {
         try
         {
-            await Shell.Current.GoToAsync(nameof(LoginPage));
+           await Application.Current.MainPage.Navigation.PushAsync(new LoginPage());
         }
         catch (Exception ex)
         {

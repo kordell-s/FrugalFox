@@ -60,6 +60,10 @@
               "target": "Package",
               "version": "[4.0.3, )"
             },
+            "Microcharts.Maui": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
             "Microsoft.Extensions.Logging.Debug": {
               "target": "Package",
               "version": "[8.0.1, )"
@@ -77,6 +81,10 @@
               "target": "Package",
               "version": "[8.0.12, )",
               "autoReferenced": true
+            },
+            "SkiaSharp": {
+              "target": "Package",
+              "version": "[3.118.0-preview.2.3, )"
             },
             "sqlite-net-pcl": {
               "target": "Package",
@@ -125,6 +133,10 @@
               "target": "Package",
               "version": "[4.0.3, )"
             },
+            "Microcharts.Maui": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
             "Microsoft.Extensions.Logging.Debug": {
               "target": "Package",
               "version": "[8.0.1, )"
@@ -142,6 +154,10 @@
               "target": "Package",
               "version": "[8.0.12, )",
               "autoReferenced": true
+            },
+            "SkiaSharp": {
+              "target": "Package",
+              "version": "[3.118.0-preview.2.3, )"
             },
             "sqlite-net-pcl": {
               "target": "Package",
@@ -194,6 +210,10 @@
               "target": "Package",
               "version": "[4.0.3, )"
             },
+            "Microcharts.Maui": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
             "Microsoft.Extensions.Logging.Debug": {
               "target": "Package",
               "version": "[8.0.1, )"
@@ -211,6 +231,10 @@
               "target": "Package",
               "version": "[8.0.12, )",
               "autoReferenced": true
+            },
+            "SkiaSharp": {
+              "target": "Package",
+              "version": "[3.118.0-preview.2.3, )"
             },
             "sqlite-net-pcl": {
               "target": "Package",

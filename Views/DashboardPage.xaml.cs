@@ -9,7 +9,7 @@ namespace FrugalFoxBudgetApp
         public DashboardPage()
         {
             InitializeComponent();
-            // Do not set BindingContext here.
+  
         }
 
         protected override async void OnAppearing()
@@ -18,8 +18,8 @@ namespace FrugalFoxBudgetApp
 
             if (App.CurrentUser == null)
             {
-                // Navigate to login if there's no logged-in user.
-                await Shell.Current.GoToAsync(nameof(LoginPage));
+                
+                await Application.Current.MainPage.Navigation.PushAsync(new LoginPage());
                 return;
             }
             else
@@ -28,6 +28,9 @@ namespace FrugalFoxBudgetApp
                 if (BindingContext == null)
                 {
                     BindingContext = new DashboardPageViewModel();
+                } else if (BindingContext is DashboardPageViewModel vm)
+                {
+                    vm.LoadRecentTransactions();
                 }
             }
         }

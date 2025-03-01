@@ -15,6 +15,7 @@ public class AddTransactionViewModel : INotifyPropertyChanged
         Database = new FrugalFoxDB();
         SaveTransactionCommand = new Command(OnSaveTransaction);
         TransactionDate = DateTime.Today;
+        LoadCategories();
     }
 
     private decimal amount;
@@ -95,35 +96,32 @@ public class AddTransactionViewModel : INotifyPropertyChanged
 
     private async void OnSaveTransaction()
     {
-        if (Amount <= 0 || CategoryId <= 0)
+        if (Amount <= 0)
         {
-            await Application.Current.MainPage.DisplayAlert("Error", "Please enter a valid amount", "OK");
+            await Application.Current.MainPage.DisplayAlert("Error", "Please enter a valid amount.", "OK");
             return;
         }
-        
-        //retrieving category from db
-        
-        var category = Database.GetCategoryById(CategoryId);
-        if (category == null)
+        if (SelectedCategory == null)
         {
-            await Application.Current.MainPage.DisplayAlert("Error", "Category not found", "OK");
+            await Application.Current.MainPage.DisplayAlert("Error", "Please select a category.", "OK");
             return;
         }
 
         var transaction = new Transaction
         {
             UserId = App.CurrentUser.UserId,
-            CategoryId = CategoryId,
+            CategoryId = SelectedCategory.CategoryId,
             Amount = Amount,
             Date = TransactionDate,
             CategoryName = SelectedCategory.Name
         };
-        
+
         int result = Database.AddTransaction(transaction);
         if (result > 0)
         {
             await Application.Current.MainPage.DisplayAlert("Success", "Transaction added", "OK");
-            await Shell.Current.GoToAsync("..");
+            // Navigate explicitly to the DashboardPage.
+            await Application.Current.MainPage.Navigation.PushAsync(new DashboardPage());
         }
         else
         {

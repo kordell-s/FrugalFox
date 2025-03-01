@@ -12,7 +12,7 @@ public partial class App : Application
     {
         InitializeComponent();
         FFoxDB = new FrugalFoxDB();
-        MainPage = new SplashScreen();
+        MainPage = new NavigationPage( new SplashScreen());
         
 
     }

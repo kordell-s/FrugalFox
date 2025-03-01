@@ -89,15 +89,26 @@ public class DashboardPageViewModel:INotifyPropertyChanged
     public  DashboardPageViewModel()
     {
         Database = new FrugalFoxDB();
-        userID = App.CurrentUser.UserId;
-        var user = Database.GetUserByEmail(App.CurrentUser.Email);
-        Greeting = user != null ? $"Hello, {user.FirstName}!" : "User not found.";
+
+        if (App.CurrentUser != null)
+        {
 
 
+            userID = App.CurrentUser.UserId;
+            var user = Database.GetUserByEmail(App.CurrentUser.Email);
+            Greeting = user != null ? $"Hello, {user.FirstName}!" : "User not found.";
+            LoadCurrentBudget();
+            LoadRecentTransactions();
+        }
+        else
+        {
+            Greeting = "Please log in";
+            MonthlyBudget = 0;
+            BudgetStatus = "No active user";
+            RecentTransactions = new ObservableCollection<TransactionViewModel>();
+        }
 
-        LoadCurrentBudget();
-        LoadRecentTransactions();
-
+        
         AddTransactionCommand = new Command(OnAddTransaction);
         ViewReportsCommand = new Command(OnViewReports);
         SetBudgetCommand = new Command(OnSetBudget);
@@ -106,6 +117,8 @@ public class DashboardPageViewModel:INotifyPropertyChanged
 
     private void LoadCurrentBudget()
     {
+        if (App.CurrentUser == null) return;
+        
         var today = DateTime.Today;
         currentBudget = Database.GetCurrentBudget(userID);
 
@@ -123,6 +136,7 @@ public class DashboardPageViewModel:INotifyPropertyChanged
 
     private void UpdateBudgetStatus()
     {
+        if (App.CurrentUser == null) return;
         if (MonthlyBudget <= 0)
         {
             BudgetStatus = "No active Budget. Tap 'Set Budget to get started";
@@ -136,11 +150,11 @@ public class DashboardPageViewModel:INotifyPropertyChanged
         }
         else
         {
-            BudgetStatus = "$Budget: ${MonthlyBudget:F2}";
+            BudgetStatus = $"Budget: ${MonthlyBudget:F2}";
         }
     }
 
-    private void LoadRecentTransactions()
+    public void LoadRecentTransactions()
     {
         var query = @"
         SELECT t.*, c.Name as CategoryName
@@ -162,13 +176,15 @@ public class DashboardPageViewModel:INotifyPropertyChanged
         }).ToList();
     
         RecentTransactions = new ObservableCollection<TransactionViewModel>((IEnumerable<TransactionViewModel>)transactionViewModels);
-    }
+        System.Diagnostics.Debug.WriteLine($"LoadRecentTransactions: RecentTransactions count is {RecentTransactions.Count}.");
+
+    } 
 
     private async void OnAddTransaction()
     {
         try
         {
-            await Shell.Current.GoToAsync("AddTransactionPage");
+            await Application.Current.MainPage.Navigation.PushAsync(new AddTransactionPage());
         }catch (Exception ex)
 
         {
@@ -180,7 +196,7 @@ public class DashboardPageViewModel:INotifyPropertyChanged
     {
         try
         { 
-            await Shell.Current.GoToAsync("AddViewReportsPage");
+            await Application.Current.MainPage.Navigation.PushAsync(new ViewReportsPage());
         }catch (Exception ex)
 
         {
@@ -192,7 +208,7 @@ public class DashboardPageViewModel:INotifyPropertyChanged
     {
         try
          {
-           await Shell.Current.GoToAsync("SetBudgetPage");
+           await Application.Current.MainPage.Navigation.PushAsync(new SetBudgetPage());
         }catch (Exception ex)
 
          {
