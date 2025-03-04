@@ -4,10 +4,12 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
 using System;
+using CommunityToolkit.Mvvm.Messaging;
 using FrugalFoxBudgetApp.Database;
 using FrugalFoxBudgetApp.Models;
 using FrugalFoxBudgetApp.Views;
 using SQLite;
+using FrugalFoxBudgetApp.Messages; 
 
 namespace FrugalFoxBudgetApp.ViewModels;
 
@@ -112,25 +114,37 @@ public class DashboardPageViewModel:INotifyPropertyChanged
         AddTransactionCommand = new Command(OnAddTransaction);
         ViewReportsCommand = new Command(OnViewReports);
         SetBudgetCommand = new Command(OnSetBudget);
+        
+        WeakReferenceMessenger.Default.Register<BudgetUpdatedMessage>(this, (r, message) =>
+        {
+            // Refresh the budget information.
+            LoadCurrentBudget();
+        });
+
+
 
     }
 
     private void LoadCurrentBudget()
     {
         if (App.CurrentUser == null) return;
-        
+    
         var today = DateTime.Today;
         currentBudget = Database.GetCurrentBudget(userID);
 
         if (currentBudget != null)
         {
+            // Update current spent from the sum of transactions
+            currentBudget.CurrentSpent = Database.CalculateCurrentSpent(userID);
+        
+            // Now update the MonthlyBudget (if needed) and refresh status
             MonthlyBudget = currentBudget.MonthlyBudget;
             UpdateBudgetStatus();
         }
         else
         {
             MonthlyBudget = 0;
-            BudgetStatus = "No active Budget. Tap 'Set Budget to get started";
+            BudgetStatus = "No active Budget. Tap 'Set Budget' to get started";
         }
     }
 
@@ -153,32 +167,65 @@ public class DashboardPageViewModel:INotifyPropertyChanged
             BudgetStatus = $"Budget: ${MonthlyBudget:F2}";
         }
     }
-
+    
+    public void LoadRecentTransactions()
+       {
+           var query = @" 
+SELECT t.*, c.Name as CategoryName, c.Icon as CategoryIcon
+    FROM Transactions t
+    LEFT JOIN Categories c ON t.CategoryId = c.CategoryId
+    WHERE t.UserId = ?
+    ORDER BY t.Date DESC
+    LIMIT 5";
+       
+           var transactions = Database.Query<Transaction>(query, userID);
+           System.Diagnostics.Debug.WriteLine($"Join query (with LEFT JOIN) returned {transactions.Count} transactions.");
+       
+           var transactionViewModels = transactions.Select(t => new TransactionViewModel {
+               TransactionId = t.TransactionId,
+               Amount = t.Amount,
+               Date = t.Date,
+               CategoryName = t.CategoryName, 
+               CategoryIcon = t.CategoryIcon 
+           }).ToList();
+       
+           RecentTransactions = new ObservableCollection<TransactionViewModel>(transactionViewModels);
+           System.Diagnostics.Debug.WriteLine($"LoadRecentTransactions: RecentTransactions count is {RecentTransactions.Count}.");
+       }
+    
+    
+    /*
     public void LoadRecentTransactions()
     {
-        var query = @"
-        SELECT t.*, c.Name as CategoryName
-        FROM Transactions t
-        JOIN Categories c ON t.CategoryId = c.CategoryId
-        WHERE t.UserId = ?
-        ORDER BY t.Date DESC
-        LIMIT 5";
+        System.Diagnostics.Debug.WriteLine("Current user ID: " + userID);
     
-        // Getting the transactions from the database
-        var transactions = Database.Query<Transaction>(query, userID);
+        // Simple query test
+        var simpleQuery = "SELECT * FROM Transactions WHERE UserId = ?";
+        var simpleResults = Database.Query<Transaction>(simpleQuery, userID);
+        Console.WriteLine($"Simple query returned {simpleResults.Count} transactions.");
     
-        // Mapping each transaction to a TransactionViewModel
-        var transactionViewModels = transactions.Select(t => new TransactionViewModel {
+        // Also use Debug.WriteLine
+        System.Diagnostics.Debug.WriteLine($"Simple query returned {simpleResults.Count} transactions.");
+    
+        // If no records, then the issue is likely with your database data or the userId.
+        if(simpleResults.Count == 0)
+        {
+            // Optionally, set a breakpoint or display an alert
+            System.Diagnostics.Debug.WriteLine("No transactions found for user " + userID);
+        }
+    
+        // For now, map the simpleResults to view models (if any)
+        var transactionViewModels = simpleResults.Select(t => new TransactionViewModel {
             TransactionId = t.TransactionId,
             Amount = t.Amount,
             Date = t.Date,
-            CategoryName = t.CategoryName
+            CategoryName = t.CategoryName  // Might be empty if no join happened
         }).ToList();
     
-        RecentTransactions = new ObservableCollection<TransactionViewModel>((IEnumerable<TransactionViewModel>)transactionViewModels);
+        RecentTransactions = new ObservableCollection<TransactionViewModel>(transactionViewModels);
         System.Diagnostics.Debug.WriteLine($"LoadRecentTransactions: RecentTransactions count is {RecentTransactions.Count}.");
-
-    } 
+    }*/
+   
 
     private async void OnAddTransaction()
     {

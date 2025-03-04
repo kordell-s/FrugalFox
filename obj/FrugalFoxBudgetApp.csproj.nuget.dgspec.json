@@ -60,6 +60,10 @@
               "target": "Package",
               "version": "[4.0.3, )"
             },
+            "CommunityToolkit.Mvvm": {
+              "target": "Package",
+              "version": "[8.4.0, )"
+            },
             "Microcharts.Maui": {
               "target": "Package",
               "version": "[1.0.0, )"
@@ -132,6 +136,10 @@
             "BCrypt.Net-Next": {
               "target": "Package",
               "version": "[4.0.3, )"
+            },
+            "CommunityToolkit.Mvvm": {
+              "target": "Package",
+              "version": "[8.4.0, )"
             },
             "Microcharts.Maui": {
               "target": "Package",
@@ -209,6 +217,10 @@
             "BCrypt.Net-Next": {
               "target": "Package",
               "version": "[4.0.3, )"
+            },
+            "CommunityToolkit.Mvvm": {
+              "target": "Package",
+              "version": "[8.4.0, )"
             },
             "Microcharts.Maui": {
               "target": "Package",

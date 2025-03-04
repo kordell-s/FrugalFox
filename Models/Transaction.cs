@@ -11,10 +11,12 @@ public class Transaction
     public int CategoryId { get; set; }
     public decimal Amount { get; set; }
     public DateTime Date { get; set; }
+    public string CategoryName { get; set; } = null!;
     
     [Ignore]
     public User User { get; set; } = null!;
     [Ignore]
     public Category Category { get; set; } = null!;
-    public string CategoryName { get; set; } = null!;
+    public string CategoryIcon { get; set; } = null!;
+  
 }

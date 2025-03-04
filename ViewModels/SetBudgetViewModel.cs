@@ -2,6 +2,9 @@ using System.ComponentModel;
 using System.Windows.Input;
 using FrugalFoxBudgetApp.Database;
 using FrugalFoxBudgetApp.Models;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
+using FrugalFoxBudgetApp.Messages;
 
 namespace FrugalFoxBudgetApp.ViewModels;
 
@@ -85,13 +88,15 @@ public class SetBudgetViewModel : INotifyPropertyChanged
         if (result > 0)
         {
             await Application.Current.MainPage.DisplayAlert("Success", "Budget added.", "OK");
-            await Shell.Current.GoToAsync("..");
+            WeakReferenceMessenger.Default.Send(new BudgetUpdatedMessage(true));
+            await Application.Current.MainPage.Navigation.PopAsync();
         }
         else
         {
-            await Application.Current.MainPage.DisplayAlert("Error", "Budget added.", "OK");
+            await Application.Current.MainPage.DisplayAlert("Error", "Budget not added.", "OK");
         }
     }
+    
     
     public event PropertyChangedEventHandler? PropertyChanged;
     protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

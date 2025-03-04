@@ -29,10 +29,14 @@
                             <Frame CornerRadius="8" Padding="10" Margin="5">
                                 <StackLayout Spacing="5">
                                     <StackLayout Orientation="Horizontal">
+                                        <Image Source="{Binding CategoryIcon}" 
+                                               WidthRequest="20" 
+                                               HeightRequest="20"
+                                               Margin="0,0,5,0" />
                                         <Label Text="{Binding CategoryName}" FontAttributes="Bold"></Label>
                                         <Label Text="{Binding Amount, StringFormat='{}{0:C}'}" HorizontalOptions="EndAndExpand" />
                                     </StackLayout>
-                                    <Label Text="{Binding Date, StringFormat ='{0:MM dd}'}" FontSize="Small" TextColor="Gray"></Label>
+                                    <Label Text="{Binding Date, StringFormat ='{0:MM / dd}'}" FontSize="Small" TextColor="Gray"></Label>
                                 </StackLayout>
                             </Frame>
                         </DataTemplate>
@@ -40,9 +44,9 @@
                 </CollectionView>
                 
                 <!-- Quick Actions -->
-                <Button Text="Add Transaction" Command="{Binding AddTransactionCommand}"></Button>
-                <Button Text="Set Budget" Command="{Binding SetBudgetCommand}"></Button>
-                <Button Text="View Reports" Command="{Binding ViewReportsCommand}"></Button>
+                <Button Text="Add Transaction" BackgroundColor="#EA4337" Command="{Binding AddTransactionCommand}"></Button>
+                <Button Text="Set Budget" BackgroundColor="#EA4337" Command="{Binding SetBudgetCommand}"></Button>
+                <Button Text="View Reports" BackgroundColor="#EA4337" Command="{Binding ViewReportsCommand}"></Button>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "/uFCBmCjO1I=",
+  "dgSpecHash": "kP+MGbJ0Bjk=",
   "success": true,
   "projectFilePath": "/Users/admin/RiderProjects/FrugalFox/FrugalFoxBudgetApp/FrugalFoxBudgetApp.csproj",
   "expectedPackageFiles": [
     "/Users/admin/.nuget/packages/bcrypt.net-next/4.0.3/bcrypt.net-next.4.0.3.nupkg.sha512",
+    "/Users/admin/.nuget/packages/communitytoolkit.mvvm/8.4.0/communitytoolkit.mvvm.8.4.0.nupkg.sha512",
     "/Users/admin/.nuget/packages/googlegson/2.10.1.4/googlegson.2.10.1.4.nupkg.sha512",
     "/Users/admin/.nuget/packages/microcharts.maui/1.0.0/microcharts.maui.1.0.0.nupkg.sha512",
     "/Users/admin/.nuget/packages/microsoft.extensions.configuration/8.0.0/microsoft.extensions.configuration.8.0.0.nupkg.sha512",

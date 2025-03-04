@@ -35,7 +35,6 @@ public class FrugalFoxDB
         {
             CurrentState = e.Message;
         }
-        
         SeedOrUpdateDefaultCategories();
     }
     
@@ -47,10 +46,10 @@ public class FrugalFoxDB
         // Define default categories.
         var defaultCategories = new List<Category>
         {
-            new Category { Name = "Food", Icon = "food_icon", Color = "#F39C12" },
-            new Category { Name = "Transport", Icon = "transport_icon", Color = "#27AE60" },
-            new Category { Name = "Entertainment", Icon = "entertainment_icon", Color = "#8E44AD" },
-            new Category { Name = "Utilities", Icon = "utilities_icon", Color = "#2980B9" }
+            new Category { Name = "Food", Icon = "food.png", Color = "#F39C12" },
+            new Category { Name = "Transport", Icon = "transportation.png", Color = "#27AE60" },
+            new Category { Name = "Entertainment", Icon = "entertainment.png", Color = "#8E44AD" },
+            new Category { Name = "Utilities", Icon = "utilities.png", Color = "#2980B9" }
         };
 
         // For each default category, insert if missing or update if it exists.
@@ -68,7 +67,20 @@ public class FrugalFoxDB
                 DatabaseConnection.Update(existingCat);
             }
         }
+        
+        
     }
+    
+    
+    //to get updated amount spent each time
+    
+    public decimal CalculateCurrentSpent(int userId)
+    {
+        var transactions = DatabaseConnection.Table<Transaction>().Where(t => t.UserId == userId).ToList();
+        return transactions.Sum(t => t.Amount);
+    }
+    
+    
     //Define Utility Functions
     public List<T> Query<T>(string query, params object[] args) where T : new()
     {

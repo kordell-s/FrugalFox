@@ -9,4 +9,6 @@ public class TransactionViewModel
     public string FormattedDate => Date.ToString("MMM dd, yyyy");
     
     public string CategoryName { get; set; }
+    
+    public string CategoryIcon { get; set; }
 }
