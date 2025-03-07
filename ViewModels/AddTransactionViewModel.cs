@@ -18,6 +18,21 @@ public class AddTransactionViewModel : INotifyPropertyChanged
         LoadCategories();
     }
 
+    private string title;
+
+    public string Title
+    {
+       get => title;
+       set
+       {
+           if (title != value)
+           {
+               title = value;
+               OnPropertyChanged(nameof(Title));
+           }
+       }
+    }
+
     private decimal amount;
 
     public decimal Amount
@@ -101,6 +116,12 @@ public class AddTransactionViewModel : INotifyPropertyChanged
             await Application.Current.MainPage.DisplayAlert("Error", "Please enter a valid amount.", "OK");
             return;
         }
+
+        if (string.IsNullOrWhiteSpace(Title))
+        {
+            await Application.Current.MainPage.DisplayAlert("Error", "Please enter a valid title.", "OK");
+            return;
+        }
         if (SelectedCategory == null)
         {
             await Application.Current.MainPage.DisplayAlert("Error", "Please select a category.", "OK");
@@ -111,6 +132,7 @@ public class AddTransactionViewModel : INotifyPropertyChanged
         {
             UserId = App.CurrentUser.UserId,
             CategoryId = SelectedCategory.CategoryId,
+            Title = Title,
             Amount = Amount,
             Date = TransactionDate,
             CategoryName = SelectedCategory.Name

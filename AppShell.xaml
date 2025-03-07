@@ -4,12 +4,44 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:FrugalFoxBudgetApp"
+    xmlns:views="clr-namespace:FrugalFoxBudgetApp.Views"
     Shell.FlyoutBehavior="Disabled"
-    Title="FrugalFoxBudgetApp">
+    Title="FrugalFoxBudgetApp"
+    Shell.TabBarBackgroundColor="White"
+    Shell.TabBarForegroundColor="Gray"
+    Shell.TabBarUnselectedColor="Gray">
 
     <ShellContent
         Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-
+        ContentTemplate="{DataTemplate views:LoginPage}"
+        Route="LoginPage" />
+    
+    <!-- Defining a TabBar that appears at the bottom of the screen -->
+    <TabBar>
+        <!-- Dashboard Tab -->
+        <Tab Title="Dashboard" Icon="dashboard_sm.png">
+            <ShellContent ContentTemplate="{DataTemplate local:DashboardPage}" Route="DashboardPage" />
+        </Tab>
+        <!-- Budget Tab -->
+        <Tab Title="Budget" Icon="transactions_sm.png">
+            <ShellContent ContentTemplate="{DataTemplate views:SetBudgetPage}" Route="SetBudgetPage" />
+        </Tab>
+        <!-- Transactions Tab -->
+        <Tab Title="Transactions" Icon="transactions_sm.png">
+            <ShellContent ContentTemplate="{DataTemplate views:ViewTransactionsPage}" Route="ViewTransactionPage" />
+        </Tab>
+        <!-- Reports Tab -->
+        <Tab Title="Reports" Icon="reports_sm.png">
+            <ShellContent ContentTemplate="{DataTemplate views:ViewReportsPage}" Route="ViewReportsPage" />
+        </Tab>
+    </TabBar>
+    
+    <Shell.Resources>
+        <ResourceDictionary>
+            <!-- Style for the Tab -->
+            <Style TargetType="ShellItem">
+            </Style>
+        </ResourceDictionary>
+    </Shell.Resources>
 </Shell>
+

@@ -16,7 +16,7 @@ public partial class SplashScreen : ContentPage
         Device.StartTimer(TimeSpan.FromSeconds(2), () =>
         {
             // Navigate to Shell or MainPage
-            Application.Current.MainPage = new NavigationPage(new CreateAccountPage()); 
+            Application.Current.MainPage = new NavigationPage(new LoginPage()); 
             return false; // Return false to stop the timer
         });
     }

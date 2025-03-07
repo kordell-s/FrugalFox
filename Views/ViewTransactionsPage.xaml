@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:viewModels="clr-namespace:FrugalFoxBudgetApp.ViewModels"
+             x:Class="FrugalFoxBudgetApp.Views.ViewTransactionsPage">
+    
+    <ContentPage.BindingContext>
+        <viewModels:ViewTransactionsViewModel />
+    </ContentPage.BindingContext>
+    
+    <Grid RowDefinitions="Auto,Auto,*" Padding="15">
+        <!-- Heading -->
+        <Label Text="All Transactions" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center"/>
+        <!-- Search Bar -->
+        <Frame Grid.Row="0" BorderColor="LightGray" Padding="10" Margin="0,0,0,10" CornerRadius="8">
+            <Grid ColumnDefinitions="*,Auto">
+                <Entry Grid.Column="0" 
+                       Placeholder="Search transactions..." 
+                       Text="{Binding SearchText}" 
+                       ReturnCommand="{Binding SearchCommand}"/>
+                <ImageButton Grid.Column="1"
+                             Source="search.png"
+                             BackgroundColor="#EA4337"
+                             Command="{Binding SearchCommand}"
+                             HeightRequest="20"
+                             WidthRequest="20"
+                             Padding="0" />
+            </Grid>
+        </Frame>
+
+        <!-- Filter Options -->
+        <Frame Grid.Row="1" BorderColor="LightGray" Padding="10" Margin="0,0,0,10" CornerRadius="8">
+            <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto">
+                <Label Grid.Column="0" Grid.Row="0" Text="Date Range" FontAttributes="Bold" Margin="0,0,0,5"/>
+                <Picker x:Name="DateRangePicker" Grid.Column="0" Grid.Row="1"
+                        ItemsSource="{Binding DateRangeOptions}"
+                        SelectedItem="{Binding SelectedDateRange}">
+                    <Picker.Behaviors>
+                        <toolkit:EventToCommandBehavior 
+                            EventName="SelectedIndexChanged"
+                            Command="{Binding DateRangeChangedCommand}"
+                            CommandParameter="{Binding SelectedItem, Source={x:Reference DateRangePicker}}"/>
+                    </Picker.Behaviors>
+                </Picker>
+
+                <Label Grid.Column="1" Grid.Row="0" Text="Category" FontAttributes="Bold" Margin="0,0,0,5"/>
+                <Picker Grid.Column="1" Grid.Row="1" 
+                        ItemsSource="{Binding Categories}"
+                        SelectedItem="{Binding SelectedCategory}"/>
+                
+            </Grid>
+        </Frame>
+
+        <!-- Transactions List -->
+        <RefreshView Grid.Row="2" 
+                    IsRefreshing="{Binding IsRefreshing}"
+                    Command="{Binding RefreshCommand}">
+            <CollectionView ItemsSource="{Binding Transactions}" 
+                          SelectionMode="Single">
+                <CollectionView.EmptyView>
+                    <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                        <Image Source="notransactions.png" HeightRequest="100" WidthRequest="100" />
+                        <Label Text="No transactions found" FontSize="18" HorizontalOptions="Center" Margin="0,10,0,0" />
+                        <!--<Button Text="Add Transaction" BackgroundColor="#EA4337" Command="{Binding AddTransactionCommand}" Margin="0,20,0,0" /> -->
+                    </StackLayout>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Margin="0,0,0,10" BorderColor="LightGray" CornerRadius="8" Padding="10">
+                            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto">
+                                <!-- Transaction Description -->
+                                <Label Grid.Column="0" Grid.Row="0" 
+                                       Text="{Binding Title}" 
+                                       FontAttributes="Bold" 
+                                       FontSize="16"/>
+                                
+                                <!-- Transaction Amount -->
+                                <Label Grid.Column="1" Grid.Row="0" 
+                                       Text="{Binding Amount, StringFormat='${0:N2}'}" 
+                                       FontAttributes="Bold" 
+                                       FontSize="16"
+                                       />
+                                
+                                <!-- Category -->
+                                <Label Grid.Column="0" Grid.Row="1" 
+                                       Text="{Binding CategoryName}" 
+                                       FontSize="14" 
+                                       TextColor="Gray"/>
+                                
+                                <!-- Date -->
+                                <Label Grid.Column="1" Grid.Row="1" 
+                                       Text="{Binding Date, StringFormat='{0:MMM dd, yyyy}'}" 
+                                       FontSize="14" 
+                                       TextColor="Gray"/>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+        
+        <!-- Add Transaction Floating Button -->
+        <Button Grid.Row="2" 
+                Text="+" 
+                FontSize="24" 
+                FontAttributes="Bold"
+                Command="{Binding AddTransactionCommand}"
+                HorizontalOptions="End" 
+                VerticalOptions="End"
+                HeightRequest="46" 
+                WidthRequest="46" 
+                CornerRadius="24"
+                Margin="0,0,20,20"
+                BackgroundColor="#EA4337"
+                TextColor="White"/>
+    </Grid>
+</ContentPage>

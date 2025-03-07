@@ -6,6 +6,7 @@
     <ContentPage.Content>
         <StackLayout Padding="20" Spacing="15">
             <Label Text="Add Transaction" FontSize="24" HorizontalOptions="Center" />
+            <Entry Placeholder="Transaction Title (e.g. Fruits)" Text="{Binding Title}" />
             <Entry Placeholder="Amount" Text="{Binding Amount}" Keyboard="Numeric" />
             <DatePicker Date="{Binding TransactionDate}"></DatePicker>
             <Picker Title="Select Category" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" ItemDisplayBinding="{Binding Name}"/>

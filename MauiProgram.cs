@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CommunityToolkit.Maui;
+using FrugalFoxBudgetApp.Views;
+using Microsoft.Extensions.Logging;
 
 namespace FrugalFoxBudgetApp;
 
@@ -9,6 +11,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -18,7 +21,11 @@ public static class MauiProgram
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
-
+        builder.Services.AddTransient<LoginPage>();
+        builder.Services.AddTransient<DashboardPage>();
+        builder.Services.AddTransient<AddTransactionPage>();
+        builder.Services.AddTransient<ViewReportsPage>();
+        builder.Services.AddSingleton<AppShell>();
         return builder.Build();
     }
 }

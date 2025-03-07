@@ -95,7 +95,8 @@ namespace FrugalFoxBudgetApp.ViewModels
                 App.CurrentUser = user; //storing logged in user
                 
                 //navigate to dashboard
-                await Application.Current.MainPage.Navigation.PushAsync(new DashboardPage());
+                //await Application.Current.MainPage.Navigation.PushAsync(new DashboardPage());
+                await Shell.Current.GoToAsync("//DashboardPage");
             }
             catch (Exception ex)
             {

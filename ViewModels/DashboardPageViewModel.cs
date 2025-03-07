@@ -183,6 +183,7 @@ SELECT t.*, c.Name as CategoryName, c.Icon as CategoryIcon
        
            var transactionViewModels = transactions.Select(t => new TransactionViewModel {
                TransactionId = t.TransactionId,
+               Title = t.Title, 
                Amount = t.Amount,
                Date = t.Date,
                CategoryName = t.CategoryName, 
