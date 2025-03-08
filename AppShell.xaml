@@ -20,7 +20,7 @@
     <TabBar>
         <!-- Dashboard Tab -->
         <Tab Title="Dashboard" Icon="dashboard_sm.png">
-            <ShellContent ContentTemplate="{DataTemplate local:DashboardPage}" Route="DashboardPage" />
+            <ShellContent ContentTemplate="{DataTemplate views:DashboardPage}" Route="DashboardPage" />
         </Tab>
         <!-- Budget Tab -->
         <Tab Title="Budget" Icon="transactions_sm.png">

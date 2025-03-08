@@ -1,55 +1,114 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:FrugalFoxBudgetApp.ViewModels"
-             x:Class="FrugalFoxBudgetApp.DashboardPage">
-    <ContentPage.Content>
-        <ScrollView>
-            <StackLayout Padding="20" Spacing="20" >
-                <!-- Heading -->
-                <Label Text="{Binding Greeting}" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center"/>
-                
-                <!-- Budget -->
-                <Frame BackgroundColor="#EA4337" CornerRadius="10" Padding="15">
-                    <StackLayout Spacing="10">
-                        <Label Text="Monthly Budget" FontSize="Medium" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"></Label>
-                        
-                        <Label Text="{Binding MonthlyBudget, StringFormat='{}{0:C}'}" FontSize="24" TextColor="White" HorizontalOptions="Center" FontAttributes="Bold"/>
-                        
-                        <Label Text="{Binding BudgetStatus}"  TextColor="White" HorizontalOptions="Center"/>
-                    </StackLayout>
-                    </Frame>
-                
-                <!-- Recent Transactions -->
-                <Label Text="Recent Transactions" FontSize="Medium" FontAttributes="Bold"></Label>
-                <CollectionView ItemsSource="{Binding RecentTransactions}" SelectionMode = "None">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="vm:TransactionViewModel">
-                            <Frame CornerRadius="8" Padding="10" Margin="5">
-                                <StackLayout Spacing="5">
-                                    <StackLayout Orientation="Horizontal">
-                                        <Image Source="{Binding CategoryIcon}" 
-                                               WidthRequest="20" 
-                                               HeightRequest="20"
-                                               Margin="0,0,5,0" />
-                                        <Label Text="{Binding Title}" FontAttributes="Bold"></Label>
-                                       <!-- <Label Text="{Binding CategoryName}"></Label> -->
-                                        <Label Text="{Binding Amount, StringFormat='{}{0:C}'}" FontAttributes="Bold" TextColor="#EA4337" HorizontalOptions="EndAndExpand" />
-                                    </StackLayout>
-                                    <Label Text="{Binding Date, StringFormat ='{0:MM / dd}'}" FontSize="Small" TextColor="Gray"></Label>
-                                </StackLayout>
-                            </Frame>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-                
-                <!-- Quick Actions -->
-                
-                <!--<Button Text="Add Transaction" BackgroundColor="#EA4337" Command="{Binding AddTransactionCommand}"></Button>
-                <Button Text="Set Budget" BackgroundColor="#EA4337" Command="{Binding SetBudgetCommand}"></Button>
-                <Button Text="View Reports" BackgroundColor="#EA4337" Command="{Binding ViewReportsCommand}"></Button>-->
-            </StackLayout>
-        </ScrollView>
-    </ContentPage.Content>
+             xmlns:syncfusion="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
+             x:Class="FrugalFoxBudgetApp.Views.DashboardPage">
+  
+  <ContentPage.BindingContext>
+      <vm:DashboardPageViewModel/>
+  </ContentPage.BindingContext>
+
+  <!-- Use a Grid with overlapping children -->
+  <Grid>
+    <!-- Main content in a ScrollView -->
+    <ScrollView>
+      <StackLayout Padding="20" Spacing="20">
+        <!-- Heading -->
+        <Label Text="{Binding Greeting}" 
+               FontSize="24" 
+               FontAttributes="Bold" 
+               HorizontalOptions="Center"/>
+
+        <Label Text="{Binding MonthlyBudget, StringFormat='Budget: {0:C}'}" 
+               FontSize="20" 
+               FontAttributes="Bold" 
+               HorizontalOptions="Center" />
+
+        <!-- Donut Chart -->
+        <syncfusion:SfCircularChart HeightRequest="250">
+          <syncfusion:SfCircularChart.Legend>
+            <syncfusion:ChartLegend ToggleSeriesVisibility="True"/>
+          </syncfusion:SfCircularChart.Legend>
+          <syncfusion:SfCircularChart.Series>
+            <syncfusion:DoughnutSeries ItemsSource="{Binding ChartData}"
+                                       XBindingPath="Category"
+                                       YBindingPath="Value"
+                                       EnableTooltip="True"
+                                       ShowDataLabels="True">
+              <syncfusion:DoughnutSeries.PaletteBrushes>
+                <SolidColorBrush Color="#EA4337"/>
+                <SolidColorBrush Color="#CCCCCC"/>
+              </syncfusion:DoughnutSeries.PaletteBrushes>
+              <syncfusion:DoughnutSeries.DataLabelSettings>
+                <syncfusion:CircularDataLabelSettings LabelPosition="Outside" LabelPlacement="Auto">
+                  <syncfusion:CircularDataLabelSettings.LabelStyle>
+                    <syncfusion:ChartDataLabelStyle FontSize="14" 
+                                                    FontAttributes="Bold"
+                                                    LabelFormat="${Value} ({Percent}%)" />
+                  </syncfusion:CircularDataLabelSettings.LabelStyle>
+                </syncfusion:CircularDataLabelSettings>
+              </syncfusion:DoughnutSeries.DataLabelSettings>
+            </syncfusion:DoughnutSeries>
+          </syncfusion:SfCircularChart.Series>
+        </syncfusion:SfCircularChart>
+
+        <!-- Recent Transactions Header -->
+        <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center">
+          <Label Text="Recent Transactions" 
+                 FontSize="Medium" 
+                 FontAttributes="Bold" 
+                 VerticalOptions="Center" />
+          <Label Text="View Transactions" 
+                 FontSize="Medium" 
+                 TextColor="#EA4337"
+                 VerticalOptions="Center"
+                 HorizontalOptions="End">
+            <Label.GestureRecognizers>
+              <TapGestureRecognizer Command="{Binding ViewTransactionsCommand}" />
+            </Label.GestureRecognizers>
+          </Label>
+        </Grid>
+
+        <!-- Recent Transactions List -->
+        <CollectionView ItemsSource="{Binding RecentTransactions}" SelectionMode="None">
+          <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="vm:TransactionViewModel">
+              <Frame CornerRadius="8" Padding="10" Margin="5">
+                <StackLayout Spacing="5">
+                  <StackLayout Orientation="Horizontal">
+                    <Image Source="{Binding CategoryIcon}" 
+                           WidthRequest="20" 
+                           HeightRequest="20" 
+                           Margin="0,0,5,0" />
+                    <Label Text="{Binding Title}" FontAttributes="Bold"/>
+                    <Label Text="{Binding Amount, StringFormat='{}{0:C}'}" 
+                           FontAttributes="Bold" 
+                           TextColor="#EA4337" 
+                           HorizontalOptions="EndAndExpand"/>
+                  </StackLayout>
+                  <Label Text="{Binding Date, StringFormat='{0:MM / dd}'}" 
+                         FontSize="Small" 
+                         TextColor="Gray"/>
+                </StackLayout>
+              </Frame>
+            </DataTemplate>
+          </CollectionView.ItemTemplate>
+        </CollectionView>
+      </StackLayout>
+    </ScrollView>
+
+    <!-- Floating Action Button -->
+    <Button Text="+" 
+            FontSize="24" 
+            FontAttributes="Bold"
+            Command="{Binding AddTransactionCommand}"
+            BackgroundColor="#EA4337" 
+            TextColor="White"
+            CornerRadius="24"
+            WidthRequest="46"
+            HeightRequest="46"
+            Margin="0,0,20,20"
+            HorizontalOptions="End"
+            VerticalOptions="End"/>
+  </Grid>
 </ContentPage>

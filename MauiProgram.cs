@@ -1,6 +1,13 @@
 ﻿using CommunityToolkit.Maui;
 using FrugalFoxBudgetApp.Views;
 using Microsoft.Extensions.Logging;
+using Microcharts.Maui;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Maui.Controls.Hosting;
+using Microsoft.Maui.Hosting;
+using Syncfusion.Licensing;
+using Syncfusion.Maui.Core.Hosting;
+using Syncfusion.Maui.Toolkit.Hosting;
 
 namespace FrugalFoxBudgetApp;
 
@@ -11,6 +18,8 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .ConfigureSyncfusionCore()
+            .ConfigureSyncfusionToolkit()
             .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
             {
@@ -18,6 +27,7 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
+        
 #if DEBUG
         builder.Logging.AddDebug();
 #endif

@@ -9,7 +9,6 @@ using FrugalFoxBudgetApp.Database;
 using FrugalFoxBudgetApp.Models;
 using FrugalFoxBudgetApp.Views;
 using SQLite;
-using FrugalFoxBudgetApp.Messages; 
 
 namespace FrugalFoxBudgetApp.ViewModels;
 
@@ -19,14 +18,13 @@ public class DashboardPageViewModel:INotifyPropertyChanged
     private readonly FrugalFoxDB Database;
     private readonly int userID; //For current user that's logged in
     
-    
+    private decimal totalBudget;
     private decimal monthlyBudget;
     private string budgetStatus;
     private ObservableCollection<TransactionViewModel> recentTransactions;
     private string greeting;
     private Budget currentBudget;
-
-
+    
     public string Greeting
     {
         get => greeting;
@@ -79,6 +77,20 @@ public class DashboardPageViewModel:INotifyPropertyChanged
         }
         
     }
+    private ObservableCollection<BudgetChart> chartData = new ObservableCollection<BudgetChart>();
+
+    public ObservableCollection<BudgetChart> ChartData
+    {
+        get => chartData;
+        set
+        {
+            if (chartData != value)
+            {
+                chartData = value;
+                OnPropertyChanged(nameof(ChartData));
+            }
+        }
+    }
     
     //List of Commands
     
@@ -115,11 +127,25 @@ public class DashboardPageViewModel:INotifyPropertyChanged
         ViewReportsCommand = new Command(OnViewReports);
         SetBudgetCommand = new Command(OnSetBudget);
         
-        WeakReferenceMessenger.Default.Register<BudgetUpdatedMessage>(this, (r, message) =>
+        App.BudgetUpdated += () =>
         {
-            // Refresh the budget information.
+            System.Diagnostics.Debug.WriteLine("Budget updated event received.");
             LoadCurrentBudget();
-        });
+            Greeting = "Hello, Test User!";
+            MonthlyBudget = 1000;
+            BudgetStatus = "Spent $300 of $1000";
+            ChartData = new ObservableCollection<BudgetChart>
+            {
+                new BudgetChart { Category = "Spent", Value = 300 },
+                new BudgetChart { Category = "Remaining", Value = 700 }
+            };
+            RecentTransactions = new ObservableCollection<TransactionViewModel>
+            {
+                new TransactionViewModel { TransactionId = 1, Title = "Fruits", Amount = 15, Date = DateTime.Today, CategoryName = "Food", CategoryIcon = "food.png" }
+            };
+        };
+
+        
 
 
 
@@ -140,6 +166,7 @@ public class DashboardPageViewModel:INotifyPropertyChanged
             // Now update the MonthlyBudget (if needed) and refresh status
             MonthlyBudget = currentBudget.MonthlyBudget;
             UpdateBudgetStatus();
+            UpdateChartData();
         }
         else
         {
@@ -147,7 +174,53 @@ public class DashboardPageViewModel:INotifyPropertyChanged
             BudgetStatus = "No active Budget. Tap 'Set Budget' to get started";
         }
     }
+    
+    private void UpdateChartData()
+    {
+        {
+            if (currentBudget == null || currentBudget.MonthlyBudget <= 0)
+                return;
 
+            // Suppose you have loaded all transactions for the current budget period.
+            // For example, you might query all transactions for the month:
+            var startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            var endDate = startDate.AddMonths(1).AddTicks(-1);
+            var transactions = Database.Query<Transaction>(
+                "SELECT * FROM Transactions WHERE UserId = ? AND Date BETWEEN ? AND ?",
+                App.CurrentUser.UserId, startDate, endDate);
+
+            // Group transactions by category name and sum the amounts.
+            var groups = transactions.GroupBy(t => t.CategoryName)
+                .Select(g => new BudgetChart()
+                {
+                    Category = g.Key,
+                    Value = g.Sum(t => (double)t.Amount)
+                }).ToList();
+
+            // Calculate remaining budget.
+            double totalBudget = (double)currentBudget.MonthlyBudget;
+            double totalSpent = (double)currentBudget.CurrentSpent;
+            double remaining = totalBudget - totalSpent;
+
+            // If no remaining budget, show one full segment in orange.
+            if (remaining <= 0)
+            {
+                groups.Clear();
+                groups.Add(new BudgetChart { Category = "Spent", Value = totalBudget });
+            }
+            else
+            {
+                groups.Add(new BudgetChart { Category = "Remaining", Value = remaining });
+            }
+
+            // Update the collection.
+            ChartData.Clear();
+            foreach (var item in groups)
+            {
+                ChartData.Add(item);
+            }
+        }
+    }
     private void UpdateBudgetStatus()
     {
         if (App.CurrentUser == null) return;
@@ -160,11 +233,11 @@ public class DashboardPageViewModel:INotifyPropertyChanged
         if (currentBudget != null)
         {
             decimal balance = currentBudget.MonthlyBudget - currentBudget.CurrentSpent;
-            BudgetStatus = $"Spent ${currentBudget.CurrentSpent} of {currentBudget.MonthlyBudget:F2}";
+            BudgetStatus = $"Spent £{currentBudget.CurrentSpent} of £{currentBudget.MonthlyBudget:F2}";
         }
         else
         {
-            BudgetStatus = $"Budget: ${MonthlyBudget:F2}";
+            BudgetStatus = $"Budget: £{MonthlyBudget:F2}";
         }
     }
     
@@ -193,39 +266,6 @@ SELECT t.*, c.Name as CategoryName, c.Icon as CategoryIcon
            RecentTransactions = new ObservableCollection<TransactionViewModel>(transactionViewModels);
            System.Diagnostics.Debug.WriteLine($"LoadRecentTransactions: RecentTransactions count is {RecentTransactions.Count}.");
        }
-    
-    
-    /*
-    public void LoadRecentTransactions()
-    {
-        System.Diagnostics.Debug.WriteLine("Current user ID: " + userID);
-    
-        // Simple query test
-        var simpleQuery = "SELECT * FROM Transactions WHERE UserId = ?";
-        var simpleResults = Database.Query<Transaction>(simpleQuery, userID);
-        Console.WriteLine($"Simple query returned {simpleResults.Count} transactions.");
-    
-        // Also use Debug.WriteLine
-        System.Diagnostics.Debug.WriteLine($"Simple query returned {simpleResults.Count} transactions.");
-    
-        // If no records, then the issue is likely with your database data or the userId.
-        if(simpleResults.Count == 0)
-        {
-            // Optionally, set a breakpoint or display an alert
-            System.Diagnostics.Debug.WriteLine("No transactions found for user " + userID);
-        }
-    
-        // For now, map the simpleResults to view models (if any)
-        var transactionViewModels = simpleResults.Select(t => new TransactionViewModel {
-            TransactionId = t.TransactionId,
-            Amount = t.Amount,
-            Date = t.Date,
-            CategoryName = t.CategoryName  // Might be empty if no join happened
-        }).ToList();
-    
-        RecentTransactions = new ObservableCollection<TransactionViewModel>(transactionViewModels);
-        System.Diagnostics.Debug.WriteLine($"LoadRecentTransactions: RecentTransactions count is {RecentTransactions.Count}.");
-    }*/
    
 
     private async void OnAddTransaction()

@@ -25,17 +25,18 @@
                              Source="search.png"
                              BackgroundColor="#EA4337"
                              Command="{Binding SearchCommand}"
-                             HeightRequest="20"
-                             WidthRequest="20"
+                             HeightRequest="10"
+                             WidthRequest="10"
                              Padding="0" />
             </Grid>
         </Frame>
 
         <!-- Filter Options -->
         <Frame Grid.Row="1" BorderColor="LightGray" Padding="10" Margin="0,0,0,10" CornerRadius="8">
-            <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto">
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto">
                 <Label Grid.Column="0" Grid.Row="0" Text="Date Range" FontAttributes="Bold" Margin="0,0,0,5"/>
                 <Picker x:Name="DateRangePicker" Grid.Column="0" Grid.Row="1"
+                        Title="Select Date Range"
                         ItemsSource="{Binding DateRangeOptions}"
                         SelectedItem="{Binding SelectedDateRange}">
                     <Picker.Behaviors>
@@ -48,8 +49,10 @@
 
                 <Label Grid.Column="1" Grid.Row="0" Text="Category" FontAttributes="Bold" Margin="0,0,0,5"/>
                 <Picker Grid.Column="1" Grid.Row="1" 
+                        Title="Select Category"
                         ItemsSource="{Binding Categories}"
-                        SelectedItem="{Binding SelectedCategory}"/>
+                        SelectedItem="{Binding SelectedCategory}"
+                        ItemDisplayBinding="{Binding Name}"/>
                 
             </Grid>
         </Frame>
@@ -79,7 +82,7 @@
                                 
                                 <!-- Transaction Amount -->
                                 <Label Grid.Column="1" Grid.Row="0" 
-                                       Text="{Binding Amount, StringFormat='${0:N2}'}" 
+                                       Text="{Binding Amount, StringFormat='£{0:N2}'}" 
                                        FontAttributes="Bold" 
                                        FontSize="16"
                                        />

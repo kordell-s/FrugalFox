@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Windows.Input;
 using FrugalFoxBudgetApp.Database;
 using FrugalFoxBudgetApp.Models;
+using FrugalFoxBudgetApp.Views;
 
 namespace FrugalFoxBudgetApp.ViewModels;
 
@@ -135,13 +136,16 @@ public class AddTransactionViewModel : INotifyPropertyChanged
             Title = Title,
             Amount = Amount,
             Date = TransactionDate,
-            CategoryName = SelectedCategory.Name
+            CategoryName = SelectedCategory.Name,
+            CategoryIcon = SelectedCategory.Icon
         };
 
         int result = Database.AddTransaction(transaction);
         if (result > 0)
         {
             await Application.Current.MainPage.DisplayAlert("Success", "Transaction added", "OK");
+            App.OnBudgetUpdated();
+
             // Navigate explicitly to the DashboardPage.
             await Application.Current.MainPage.Navigation.PushAsync(new DashboardPage());
         }

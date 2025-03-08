@@ -18,6 +18,7 @@ public class ViewTransactionsViewModel: INotifyPropertyChanged
     {
         Database = new FrugalFoxDB();
         LoadTransactions();
+        LoadCategories();
         SearchCommand = new Command(OnSearch);
         RefreshCommand = new Command(OnRefresh);
         DateRangeChangedCommand = new Command <object>(OnDateRangeChanged);
@@ -27,6 +28,7 @@ public class ViewTransactionsViewModel: INotifyPropertyChanged
     }
     
     public ObservableCollection<TransactionViewModel> Transactions { get; set; } = new ObservableCollection<TransactionViewModel>();
+    public ObservableCollection<Category> Categories { get; set; } = new ObservableCollection<Category>();
     private ObservableCollection<string> dateRangeOptions = new ObservableCollection<string> { "Today", "This Week", "This Month", "This Year" };
     public ObservableCollection<string> DateRangeOptions
     {
@@ -34,7 +36,7 @@ public class ViewTransactionsViewModel: INotifyPropertyChanged
         set { dateRangeOptions = value; OnPropertyChanged(); }
     }
 
-    private string selectedDateRange;
+    private string selectedDateRange = "This Month";
     public string SelectedDateRange
     {
         get => selectedDateRange;
@@ -46,6 +48,23 @@ public class ViewTransactionsViewModel: INotifyPropertyChanged
         }
     }
 
+    private Category selectedCategory;
+
+    public Category SelectedCategory
+    {
+        get => selectedCategory;
+        set
+        {
+            if (selectedCategory != value)
+            {
+                selectedCategory = value;
+                OnPropertyChanged();
+                //To automatically refresh transactions when a new category is selected.
+                LoadTransactions();
+            }
+        }
+    }
+    
     public string SearchText
     {
         get => searchText;
@@ -68,6 +87,13 @@ public class ViewTransactionsViewModel: INotifyPropertyChanged
         LoadTransactions();
     }
     
+    private void LoadCategories()
+    {
+        // Query the database for all categories.
+        var categoryList = Database.Query<Category>("SELECT * FROM Categories");
+        Categories = new ObservableCollection<Category>(categoryList);
+        OnPropertyChanged(nameof(Categories));
+    }
     private async void OnAddTransaction()
     {
         // Option A: Using Shell navigation
@@ -104,6 +130,42 @@ public class ViewTransactionsViewModel: INotifyPropertyChanged
             results = results.Where(t => t.Title.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
                                          t.CategoryName.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
                 .ToList();
+        }
+
+        if (SelectedCategory != null)
+        {
+            results = results.Where(t => t.CategoryName.Equals(SelectedCategory.Name, StringComparison.OrdinalIgnoreCase)).ToList();
+           
+        }
+        
+        // Filter by date range if a selection is made.
+        if (!string.IsNullOrEmpty(SelectedDateRange))
+        {
+            DateTime startDate = DateTime.MinValue;
+            DateTime endDate = DateTime.MaxValue;
+
+            switch (SelectedDateRange)
+            {
+                case "Today":
+                    startDate = DateTime.Today;
+                    endDate = DateTime.Today.AddDays(1).AddTicks(-1);
+                    break;
+                case "This Week":
+                    // Assuming Monday is the start of the week.
+                    int diff = (7 + (DateTime.Today.DayOfWeek - DayOfWeek.Monday)) % 7;
+                    startDate = DateTime.Today.AddDays(-diff);
+                    endDate = startDate.AddDays(7).AddTicks(-1);
+                    break;
+                case "This Month":
+                    startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                    endDate = startDate.AddMonths(1).AddTicks(-1);
+                    break;
+                case "This Year":
+                    startDate = new DateTime(DateTime.Today.Year, 1, 1);
+                    endDate = startDate.AddYears(1).AddTicks(-1);
+                    break;
+            }
+            results = results.Where(t => t.Date >= startDate && t.Date <= endDate).ToList();
         }
         
         var tVMs = results.Select(t => new TransactionViewModel

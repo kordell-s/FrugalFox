@@ -1,15 +1,16 @@
 using Microsoft.Maui.Controls;
 using FrugalFoxBudgetApp.ViewModels;
 using FrugalFoxBudgetApp.Views;
+using Syncfusion.Maui.Toolkit.Charts;
 
-namespace FrugalFoxBudgetApp
+namespace FrugalFoxBudgetApp.Views
 {
     public partial class DashboardPage : ContentPage
     {
         public DashboardPage()
         {
             InitializeComponent();
-  
+
         }
 
         protected override async void OnAppearing()
