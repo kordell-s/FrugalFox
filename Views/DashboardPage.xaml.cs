@@ -1,7 +1,6 @@
 using Microsoft.Maui.Controls;
 using FrugalFoxBudgetApp.ViewModels;
 using FrugalFoxBudgetApp.Views;
-using Syncfusion.Maui.Toolkit.Charts;
 
 namespace FrugalFoxBudgetApp.Views
 {

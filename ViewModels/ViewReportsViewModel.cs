@@ -1,11 +1,10 @@
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using FrugalFoxBudgetApp.Database;
 using FrugalFoxBudgetApp.Models;
-using Microcharts;
-using SkiaSharp;
 
 namespace FrugalFoxBudgetApp.ViewModels
 {
@@ -16,12 +15,58 @@ namespace FrugalFoxBudgetApp.ViewModels
         public ViewReportsViewModel()
         {
             Database = new FrugalFoxDB();
-            LoadReports(); 
+
+            TimePeriodOptions = new ObservableCollection<string>
+            {
+                "This Month",
+                "This Year",
+                "All Time"
+            };
+            SelectedTimePeriod = TimePeriodOptions.FirstOrDefault();
+
+            ReportChartData = new ObservableCollection<ReportItem>();
+            ReportItems = new ObservableCollection<ReportItem>();
+            
+            SelectedTimePeriod = TimePeriodOptions.FirstOrDefault() ?? "This Month";
+
+            LoadReports();
         }
 
-        private ObservableCollection<ReportItem> reportItems;
-        private Chart reportChart;
+        // Time period properties
+        public ObservableCollection<string> TimePeriodOptions { get; set; }
+        
+        private string selectedTimePeriod;
+        public string SelectedTimePeriod
+        {
+            get => selectedTimePeriod;
+            set
+            {
+                if (selectedTimePeriod != value)
+                {
+                    selectedTimePeriod = value;
+                    OnPropertyChanged();
+                    LoadReports();
+                }
+            }
+        }
 
+        // Data for Syncfusion chart.
+        private ObservableCollection<ReportItem> reportChartData;
+        public ObservableCollection<ReportItem> ReportChartData
+        {
+            get => reportChartData;
+            set
+            {
+                if (reportChartData != value)
+                {
+                    reportChartData = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        // Detailed report items for a list, if needed.
+        private ObservableCollection<ReportItem> reportItems;
         public ObservableCollection<ReportItem> ReportItems
         {
             get => reportItems;
@@ -30,81 +75,77 @@ namespace FrugalFoxBudgetApp.ViewModels
                 if (reportItems != value)
                 {
                     reportItems = value;
-                    OnPropertyChanged(nameof(ReportItems));
+                    OnPropertyChanged();
                 }
             }
         }
 
-        public Chart ReportChart
-        {
-            get => reportChart;
-            set
-            {
-                if (reportChart != value)
-                {
-                    reportChart = value;
-                    OnPropertyChanged(nameof(ReportChart));
-                }
-            }
-        }
-
+        // Loads report data based on the selected time period.
         private void LoadReports()
         {
-            // Query transactions for the current user.
-            // Make sure App.CurrentUser is not null.
+            if (App.CurrentUser == null)
+            {
+                System.Diagnostics.Debug.WriteLine("Error: No user is logged in.");
+                return;
+
+            }
+            if (Database == null)
+            {
+                System.Diagnostics.Debug.WriteLine("Error: Database is NULL");
+                return;
+            }
+           
+
+            DateTime startDate;
+            DateTime endDate = DateTime.Today.AddDays(1).AddTicks(-1);
+            switch (SelectedTimePeriod)
+            {
+                case "This Month":
+                    startDate = new DateTime(endDate.Year, endDate.Month, 1);
+                    break;
+                case "This Year":
+                    startDate = new DateTime(endDate.Year, 1, 1);
+                    break;
+                case "All Time":
+                default:
+                    startDate = DateTime.MinValue;
+                    break;
+            }
+
             var transactions = Database.Query<Transaction>(
-                "SELECT * FROM Transactions WHERE UserId = ?", App.CurrentUser.UserId);
+                "SELECT t.*, c.Name as CategoryName, c.Icon as CategoryIcon " +
+                "FROM Transactions t " +
+                "LEFT JOIN Categories c ON t.CategoryId = c.CategoryId " +
+                "WHERE t.UserId = ? AND t.Date BETWEEN ? AND ?",
+                App.CurrentUser.UserId, startDate, endDate);
+            
+            if (transactions == null)
+            {
+                System.Diagnostics.Debug.WriteLine("Error: Transactions query returned NULL");
+                transactions = new List<Transaction>(); // Avoid null reference
+            }
 
             // Group transactions by category and sum the amounts.
-            var categoryTotals = transactions.GroupBy(t => t.CategoryName)
-                .Select(g => new {
+            var groups = transactions
+                .Where(t => t != null) // Ensure no null transactions
+                .GroupBy(t => t.CategoryName)
+                .Select(g => new ReportItem
+                {
                     Category = g.Key,
-                    Total = g.Sum(t => t.Amount)
+                    TotalValue = g.Sum(t => (double)t.Amount)
                 })
                 .ToList();
 
-            // Create chart entries for each category.
-            var entries = categoryTotals.Select(ct => new Microcharts.ChartEntry((float)ct.Total)
-            {
-                Label = ct.Category,
-                ValueLabel = ct.Total.ToString("C"),
-                Color = SKColor.Parse(GetColorForCategory(ct.Category))
-            }).ToArray();
-
-
-            // Create a pie chart with the entries.
-            ReportChart = new PieChart
-            {
-                Entries = entries,
-                LabelTextSize = 40,
-                BackgroundColor = SKColors.Transparent
-            };
-
-            // Build a list of report items for the ListView.
-            ReportItems = new ObservableCollection<ReportItem>(
-                transactions.Select(t => new ReportItem
-                {
-                    Title = $"{t.CategoryName}: {t.Amount:C}",
-                    Detail = t.Date.ToString("MMM dd, yyyy")
-                })
-            );
+            // Update the chart data collection.
+           ReportChartData = new ObservableCollection<ReportItem>(groups);
+           OnPropertyChanged(nameof(ReportChartData));
+           
+           ReportItems = new ObservableCollection<ReportItem>(groups);
+           OnPropertyChanged(nameof(ReportItems));
         }
 
-        private string GetColorForCategory(string category)
-        {
-            // Return fixed colors based on category.
-            return category switch
-            {
-                "Food" => "#F39C12",
-                "Transport" => "#27AE60",
-                "Entertainment" => "#8E44AD",
-                "Utilities" => "#2980B9",
-                _ => "#2C3E50"
-            };
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

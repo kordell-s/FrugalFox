@@ -2,14 +2,46 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="FrugalFoxBudgetApp.Views.SetBudgetPage">
+    
     <ContentPage.Content>
-        <StackLayout Padding="20" Spacing="15">
-            <Label Text="Set Budget" FontSize="24" HorizontalOptions="Center" />
-            <Entry Placeholder="Monthly Budget" Text="{Binding MonthlyBudget}" Keyboard="Numeric" />
+        <StackLayout Padding="20" Spacing="20">
+            
+            <!-- Page Title -->
+            <Label Text="Set Monthly Budget" 
+                   FontSize="24" 
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" FontFamily="Oswald"/>
+            
+            <!-- Budget Slider & Value Display -->
+            <Label Text="{Binding MonthlyBudget, StringFormat='Budget: {0:C}'}" 
+                   FontSize="18"
+                   HorizontalOptions="Center" FontFamily="Oswald" />
+
+            <Slider Minimum="0" 
+                    Maximum="10000" 
+                    Value="{Binding MonthlyBudget, Mode=TwoWay}" 
+                    ThumbColor="#EA4337"
+                    MinimumTrackColor="#EA4337"
+                    MaximumTrackColor="#D3D3D3" />
+
+            <!-- Start Date Picker -->
+            <Label Text="Start Date" FontSize="16" FontAttributes="Bold" FontFamily="Oswald"/>
             <DatePicker Date="{Binding StartDate}" />
+
+            <!-- End Date Picker -->
+            <Label Text="End Date" FontSize="16" FontAttributes="Bold" FontFamily="Oswald"/>
             <DatePicker Date="{Binding EndDate}" />
-            <Button Text="Save Budget" BackgroundColor="#EA4337" Command="{Binding SaveBudgetCommand}" />
+
+            <!-- Save Button -->
+            <Button Text="Save Budget" 
+                    BackgroundColor="#EA4337" 
+                    TextColor="White"
+                    FontSize="16"
+                    CornerRadius="8"
+                    HeightRequest="50"
+                    Command="{Binding SaveBudgetCommand}" FontFamily="Oswald" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

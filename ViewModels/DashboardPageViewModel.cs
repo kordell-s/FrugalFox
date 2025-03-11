@@ -37,6 +37,19 @@ public class DashboardPageViewModel:INotifyPropertyChanged
             }
         }
     }
+
+    public string RemainingBalance
+    {
+        get
+        {
+            if (currentBudget == null)
+            
+                return string.Empty;
+            decimal remaining = currentBudget.MonthlyBudget - currentBudget.CurrentSpent;
+            return $"Remaining Balance: {remaining:C}";
+
+        }
+    }
     
     public decimal MonthlyBudget
     {
@@ -98,6 +111,7 @@ public class DashboardPageViewModel:INotifyPropertyChanged
     public ICommand ViewReportsCommand { get; private set; }  
     public ICommand SetBudgetCommand { get; private set; }
     
+    public ICommand ViewTransactionsCommand { get; private set; }
     //constructor
 
     public  DashboardPageViewModel()
@@ -126,27 +140,8 @@ public class DashboardPageViewModel:INotifyPropertyChanged
         AddTransactionCommand = new Command(OnAddTransaction);
         ViewReportsCommand = new Command(OnViewReports);
         SetBudgetCommand = new Command(OnSetBudget);
+        ViewTransactionsCommand = new Command(OnViewTransactions);
         
-        App.BudgetUpdated += () =>
-        {
-            System.Diagnostics.Debug.WriteLine("Budget updated event received.");
-            LoadCurrentBudget();
-            Greeting = "Hello, Test User!";
-            MonthlyBudget = 1000;
-            BudgetStatus = "Spent $300 of $1000";
-            ChartData = new ObservableCollection<BudgetChart>
-            {
-                new BudgetChart { Category = "Spent", Value = 300 },
-                new BudgetChart { Category = "Remaining", Value = 700 }
-            };
-            RecentTransactions = new ObservableCollection<TransactionViewModel>
-            {
-                new TransactionViewModel { TransactionId = 1, Title = "Fruits", Amount = 15, Date = DateTime.Today, CategoryName = "Food", CategoryIcon = "food.png" }
-            };
-        };
-
-        
-
 
 
     }
@@ -167,6 +162,8 @@ public class DashboardPageViewModel:INotifyPropertyChanged
             MonthlyBudget = currentBudget.MonthlyBudget;
             UpdateBudgetStatus();
             UpdateChartData();
+            OnPropertyChanged(nameof(RemainingBalance));
+
         }
         else
         {
@@ -232,12 +229,14 @@ public class DashboardPageViewModel:INotifyPropertyChanged
 
         if (currentBudget != null)
         {
-            decimal balance = currentBudget.MonthlyBudget - currentBudget.CurrentSpent;
-            BudgetStatus = $"Spent £{currentBudget.CurrentSpent} of £{currentBudget.MonthlyBudget:F2}";
+            decimal spent = currentBudget.CurrentSpent;
+            decimal total = currentBudget.MonthlyBudget;
+            decimal remaining = total - spent;
+            BudgetStatus = $"Spent: {spent:C}  |  Remaining: {remaining:C}";
         }
         else
         {
-            BudgetStatus = $"Budget: £{MonthlyBudget:F2}";
+            BudgetStatus = $"Budget: {MonthlyBudget:C}";
         }
     }
     
@@ -303,9 +302,22 @@ SELECT t.*, c.Name as CategoryName, c.Icon as CategoryIcon
              System.Diagnostics.Debug.WriteLine("Error", ex.Message, "Ok"); }
     }
 
+    public async void OnViewTransactions()
+    {
+        try
+        {
+            await Application.Current.MainPage.Navigation.PushAsync(new ViewTransactionsPage());
+        }
+        catch (Exception e)
+        {
+            System.Diagnostics.Debug.WriteLine("Error", e.Message, "Ok"); 
+
+        }
+    }
+
     
     
-    public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
     protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

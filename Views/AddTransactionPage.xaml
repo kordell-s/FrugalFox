@@ -5,15 +5,15 @@
              x:Class="FrugalFoxBudgetApp.Views.AddTransactionPage">
     <ContentPage.Content>
         <StackLayout Padding="20" Spacing="15">
-            <Label Text="Add Transaction" FontSize="24" HorizontalOptions="Center" />
-            <Entry Placeholder="Transaction Title (e.g. Fruits)" Text="{Binding Title}" />
-            <Entry Placeholder="Amount" Text="{Binding Amount}" Keyboard="Numeric" />
+            <Label Text="Add Transaction" FontSize="24" HorizontalOptions="Center" FontFamily="Oswald"/>
+            <Entry Placeholder="Transaction Title (e.g. Fruits)" Text="{Binding Title}" FontFamily="Oswald"/>
+            <Entry Placeholder="Amount" Text="{Binding Amount}" Keyboard="Numeric" FontFamily="Oswald" />
             <DatePicker Date="{Binding TransactionDate}"></DatePicker>
             <Picker Title="Select Category" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" ItemDisplayBinding="{Binding Name}"/>
             <Button Text="Save Transaction"
                     Command="{Binding SaveTransactionCommand}"
                     BackgroundColor="#EA4337"
-                    TextColor="White" />
+                    TextColor="White" FontFamily="Oswald" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

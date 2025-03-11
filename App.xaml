@@ -11,8 +11,25 @@
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
                 <ResourceDictionary>
                     <syncfusion:CircularDataLabelSettings x:Key="DataLabelSettings" LabelPosition="Inside"/>
-
                 </ResourceDictionary>
+                
+                <ResourceDictionary>
+                    <!-- Light Theme Colors -->
+                    <Color x:Key="IconColor">Black</Color>
+                    <Color x:Key="ChartLabelColor">Black</Color>
+                    <Color x:Key="DoughnutKeyColor">#EA4337</Color> <!-- Spent -->
+                    <Color x:Key="DoughnutBackgroundColor">#CCCCCC</Color> <!-- Remaining -->
+
+                    <!-- Dark Theme Colors -->
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary x:Key="DarkTheme">
+                            <Color x:Key="IconColor">White</Color>
+                            <Color x:Key="ChartLabelColor">White</Color>
+                            <Color x:Key="DoughnutKeyColor">#FF5733</Color> <!-- Adjusted for better contrast -->
+                            <Color x:Key="DoughnutBackgroundColor">#666666</Color> <!-- Darker shade for remaining -->
+                        </ResourceDictionary>
+                    </ResourceDictionary.MergedDictionaries>
+                    </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

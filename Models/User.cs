@@ -26,6 +26,11 @@ public class User
     public string PasswordHash { get; set; }
     public DateTime CreatedDate { get; set; }
     
+    public string ThemePreference { get; set; } = "Light"; 
+    
+
+
+    
     [Ignore]
     public List<Transaction> Transactions { get; set; } = new List<Transaction>();
     [Ignore]

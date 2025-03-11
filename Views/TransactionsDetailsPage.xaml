@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FrugalFoxBudgetApp.Views.TransactionsDetailsPage">
+    <ContentPage.Content>
+        <StackLayout Padding="20" Spacing="15">
+            <Label Text="Transaction Details" FontSize="24" HorizontalOptions="Center" FontFamily="Oswald"/>
+            
+            <!-- Transaction Title -->
+            <Label Text="Title" FontSize="18" FontAttributes="Bold"/>
+            <Label Text="{Binding Title}" FontSize="16" FontFamily="Oswald"/>
+            
+            <!-- Amount -->
+            <Label Text="Amount" FontSize="18" FontAttributes="Bold"/>
+            <Label Text="{Binding Amount, StringFormat='£{0:N2}'}" FontSize="16" FontFamily="Oswald"/>
+            
+            <!-- Category -->
+            <Label Text="Category" FontSize="18" FontAttributes="Bold"/>
+            <Label Text="{Binding CategoryName}" FontSize="16" FontFamily="Oswald"/>
+            
+            <!-- Date -->
+            <Label Text="Date" FontSize="18" FontAttributes="Bold"/>
+            <Label Text="{Binding Date, StringFormat='{0:MMM dd, yyyy}'}" FontSize="16" FontFamily="Oswald"/>
+
+            <!-- Edit Button -->
+            <Button Text="Edit Transaction" 
+                    Command="{Binding EditTransactionCommand}" 
+                    BackgroundColor="#EA4337" 
+                    TextColor="White"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -24,6 +24,7 @@ public class ViewTransactionsViewModel: INotifyPropertyChanged
         DateRangeChangedCommand = new Command <object>(OnDateRangeChanged);
         TransactionSelectedCommand = new Command<IList>(OnTransactionSelected);
         AddTransactionCommand = new Command(OnAddTransaction);
+        ViewTransactionDetailsCommand = new Command<Transaction>(OnViewTransactionDetails);
 
     }
     
@@ -82,6 +83,14 @@ public class ViewTransactionsViewModel: INotifyPropertyChanged
     public ICommand TransactionSelectedCommand { get; }
     public ICommand AddTransactionCommand { get; }
 
+    public ICommand ViewTransactionDetailsCommand { get; }
+
+    private async void OnViewTransactionDetails(Transaction transaction)
+    {
+        if (transaction == null)
+            return;
+        await Application.Current.MainPage.Navigation.PushAsync(new TransactionsDetailsPage(transaction));
+    }
     private void OnDateRangeChanged(object parameter)
     {
         LoadTransactions();

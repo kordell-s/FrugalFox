@@ -23,7 +23,7 @@
             <ShellContent ContentTemplate="{DataTemplate views:DashboardPage}" Route="DashboardPage" />
         </Tab>
         <!-- Budget Tab -->
-        <Tab Title="Budget" Icon="transactions_sm.png">
+        <Tab Title="Budget" Icon="budget_sm.png">
             <ShellContent ContentTemplate="{DataTemplate views:SetBudgetPage}" Route="SetBudgetPage" />
         </Tab>
         <!-- Transactions Tab -->
@@ -34,6 +34,10 @@
         <Tab Title="Reports" Icon="reports_sm.png">
             <ShellContent ContentTemplate="{DataTemplate views:ViewReportsPage}" Route="ViewReportsPage" />
         </Tab>
+        <Tab Title="Profile" Icon="profile_sm.png">
+            <ShellContent Route="profile" ContentTemplate="{DataTemplate views:ProfilePage}"/>
+        </Tab>
+
     </TabBar>
     
     <Shell.Resources>

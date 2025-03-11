@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:FrugalFoxBudgetApp.ViewModels"
+             x:Class="FrugalFoxBudgetApp.Views.EditTransactionPage"
+             Title="Edit Transaction">
+
+    <ContentPage.BindingContext>
+        <viewModels:EditTransactionViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="15">
+            
+            <Label Text="Edit Transaction" 
+                   FontSize="24" 
+                   FontAttributes="Bold" 
+                   HorizontalOptions="Center"/>
+
+            <!-- Transaction Title -->
+            <Entry Placeholder="Transaction Title"
+                   Text="{Binding Title}" 
+                   FontSize="18" />
+
+            <!-- Transaction Amount -->
+            <Entry Placeholder="Amount" 
+                   Text="{Binding Amount}" 
+                   Keyboard="Numeric" 
+                   FontSize="18" />
+
+            <!-- Transaction Category -->
+            <Picker Title="Category"
+                    ItemsSource="{Binding Categories}"
+                    SelectedItem="{Binding SelectedCategory}"
+                    ItemDisplayBinding="{Binding Name}" />
+
+            <!-- Transaction Date -->
+            <DatePicker Date="{Binding Date}" />
+
+            <!-- Save & Delete Buttons -->
+            <StackLayout Orientation="Horizontal" Spacing="15">
+                <Button Text="Save" 
+                        Command="{Binding SaveCommand}" 
+                        BackgroundColor="Green"
+                        TextColor="White"/>
+                
+                <Button Text="Delete" 
+                        Command="{Binding DeleteCommand}" 
+                        BackgroundColor="Red"
+                        TextColor="White"/>
+            </StackLayout>
+
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

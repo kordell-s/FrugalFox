@@ -8,19 +8,23 @@
                 <!-- Heading -->
                 <Label Text="Welcome Back!" 
                        FontSize="24" 
-                       HorizontalOptions="Center" />
+                       HorizontalOptions="Center"
+                       FontFamily="Oswald"
+                       FontAttributes="Bold"/>
 
                 <!-- Email Entry -->
-                <Label Text="Email" />
+                <Label FontAttributes="Bold" Text="Email" FontSize="20" FontFamily="Oswald"/>
                 <Entry Placeholder="Enter your email"
-                       Keyboard="Email" 
-                       Text="{Binding Email}" />
+                                                                                   Keyboard="Email" 
+                                                                                   Text="{Binding Email}" 
+                                                                                   FontFamily="Oswald"/>
 
                 <!-- Password Entry -->
-                <Label Text="Password" />
+                <Label FontAttributes="Bold" Text="Password" FontSize="20" FontFamily="Oswald"/>
                 <Entry Placeholder="Enter your password"
                        IsPassword="True"
-                       Text="{Binding Password}" />
+                       Text="{Binding Password}" 
+                       FontFamily="Oswald"/>
                        
                 <!-- Error Message -->
                 <Label Text="{Binding ErrorMessage}"
@@ -30,13 +34,15 @@
                 <!-- Login Button -->
                 <Button Text="Log In" 
                         Command="{Binding LoginCommand}"
-                        BackgroundColor="#EA4337" />
+                        BackgroundColor="#EA4337"
+                        FontFamily="Oswald" FontAttributes="Bold"/>
 
                 <!-- Link to create account -->
                 <Button Text="Don't have an account? Create one"
                         Command="{Binding NavigateToCreateAccountCommand}"
                         BackgroundColor="Transparent"
-                        TextColor="#080203" />
+                        TextColor="#080203" 
+                        FontFamily="Oswald"/>
             </VerticalStackLayout>
         </ScrollView>
     </ContentPage.Content>

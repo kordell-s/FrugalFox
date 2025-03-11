@@ -2,28 +2,88 @@
 <ContentPage 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:charts="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
+    xmlns:vm="clr-namespace:FrugalFoxBudgetApp.ViewModels"
+    xmlns:syncfusion="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
     x:Class="FrugalFoxBudgetApp.Views.ViewReportsPage"
     Title="Reports">
     
+  <!--  <ContentPage.BindingContext>
+         <vm:ViewReportsViewModel/>
+    </ContentPage.BindingContext>-->
+    
     <ContentPage.Content>
         <ScrollView>
-            <VerticalStackLayout Padding="20" Spacing="20">
-                <!-- Page Heading -->
-                <Label Text="Reports" FontSize="24" HorizontalOptions="Center" />
-
-                <!-- Pie Chart showing spending by category -->
-                <charts:ChartView Chart="{Binding ReportChart}" HeightRequest="300" />
-
-                <!-- List of Report Items (optional additional info) -->
-                <ListView ItemsSource="{Binding ReportItems}">
-                    <ListView.ItemTemplate>
+            <StackLayout Padding="20" Spacing="20">
+                <!-- Heading -->
+                <Label Text="Transaction Reports" 
+                       FontSize="24" 
+                       FontAttributes="Bold" 
+                       HorizontalOptions="Center" FontFamily="Oswald"/>
+                       
+                <!-- Time Period Picker -->
+                <Picker Title="Select Time Period" 
+                        ItemsSource="{Binding TimePeriodOptions}"
+                        SelectedItem="{Binding SelectedTimePeriod}" FontFamily = "Oswald" />
+                
+                <!-- Doughnut Chart displaying total transactions by category -->
+                <syncfusion:SfCircularChart HeightRequest="250">
+                    <syncfusion:SfCircularChart.Series>
+                        <syncfusion:DoughnutSeries ItemsSource="{Binding ReportChartData}" 
+                                                   XBindingPath="Category"
+                                                   YBindingPath="TotalValue"
+                                                   EnableTooltip="True"
+                                                   ShowDataLabels="True">
+                            <syncfusion:DoughnutSeries.PaletteBrushes>
+                                <SolidColorBrush Color="#EA4337"/>
+                                <SolidColorBrush Color="#CCCCCC"/>
+                            </syncfusion:DoughnutSeries.PaletteBrushes>
+                            <syncfusion:DoughnutSeries.DataLabelSettings>
+                                <syncfusion:CircularDataLabelSettings LabelPosition="Outside" LabelPlacement="Auto">
+                                    <syncfusion:CircularDataLabelSettings.LabelStyle>
+                                        <syncfusion:ChartDataLabelStyle FontSize="14" 
+                                                                        FontAttributes="Bold"/>
+                                    </syncfusion:CircularDataLabelSettings.LabelStyle>
+                                </syncfusion:CircularDataLabelSettings>
+                            </syncfusion:DoughnutSeries.DataLabelSettings>
+                        </syncfusion:DoughnutSeries>
+                    </syncfusion:SfCircularChart.Series>
+                    <!-- Optional: Define a legend if needed -->
+                    <syncfusion:SfCircularChart.Legend>
+                        <syncfusion:ChartLegend ToggleSeriesVisibility="True" 
+                                                Placement="Bottom" 
+                                                />
+                    </syncfusion:SfCircularChart.Legend>
+                </syncfusion:SfCircularChart>
+                
+                <!-- Detailed Report Items -->
+                <CollectionView ItemsSource="{Binding ReportItems}">
+                    <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <TextCell Text="{Binding Title}" Detail="{Binding Detail}" />
+                            <StackLayout Spacing="5">
+                                <Grid ColumnDefinitions="*, Auto" Padding="5">
+                                    <!-- Category -->
+                                    <Label Text="{Binding Category}" 
+                                           FontAttributes="Bold" 
+                                           FontSize="16" 
+                                           HorizontalOptions="StartAndExpand" 
+                                           FontFamily="Oswald"/>
+
+                                    <!-- Amount -->
+                                    <Label Text="{Binding TotalValue, StringFormat='{}{0:C}'}" 
+                                           FontSize="16" 
+                                           HorizontalOptions="End"
+                                           FontFamily="Oswald"/>
+                                </Grid>
+
+                                <!-- Horizontal Divider -->
+                                <BoxView HeightRequest="1" 
+                                         BackgroundColor="Gray" 
+                                         Opacity="0.3"/>
+                            </StackLayout>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </VerticalStackLayout>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>

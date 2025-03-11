@@ -11,16 +11,16 @@
         <viewModels:ViewTransactionsViewModel />
     </ContentPage.BindingContext>
     
-    <Grid RowDefinitions="Auto,Auto,*" Padding="15">
+    <Grid RowDefinitions="Auto,Auto,*" Padding="15" >
         <!-- Heading -->
-        <Label Text="All Transactions" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center"/>
+        <Label Text="All Transactions" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" FontFamily="Oswald"/>
         <!-- Search Bar -->
         <Frame Grid.Row="0" BorderColor="LightGray" Padding="10" Margin="0,0,0,10" CornerRadius="8">
             <Grid ColumnDefinitions="*,Auto">
                 <Entry Grid.Column="0" 
                        Placeholder="Search transactions..." 
                        Text="{Binding SearchText}" 
-                       ReturnCommand="{Binding SearchCommand}"/>
+                       ReturnCommand="{Binding SearchCommand}" FontFamily="Oswald"/>
                 <ImageButton Grid.Column="1"
                              Source="search.png"
                              BackgroundColor="#EA4337"
@@ -38,7 +38,7 @@
                 <Picker x:Name="DateRangePicker" Grid.Column="0" Grid.Row="1"
                         Title="Select Date Range"
                         ItemsSource="{Binding DateRangeOptions}"
-                        SelectedItem="{Binding SelectedDateRange}">
+                        SelectedItem="{Binding SelectedDateRange}" FontFamily="Oswald">
                     <Picker.Behaviors>
                         <toolkit:EventToCommandBehavior 
                             EventName="SelectedIndexChanged"
@@ -52,7 +52,7 @@
                         Title="Select Category"
                         ItemsSource="{Binding Categories}"
                         SelectedItem="{Binding SelectedCategory}"
-                        ItemDisplayBinding="{Binding Name}"/>
+                        ItemDisplayBinding="{Binding Name}" FontFamily="Oswald"/>
                 
             </Grid>
         </Frame>
@@ -77,28 +77,34 @@
                                 <!-- Transaction Description -->
                                 <Label Grid.Column="0" Grid.Row="0" 
                                        Text="{Binding Title}" 
-                                       FontAttributes="Bold" 
+                                       FontAttributes="Bold"  FontFamily="Oswald"
                                        FontSize="16"/>
                                 
                                 <!-- Transaction Amount -->
                                 <Label Grid.Column="1" Grid.Row="0" 
                                        Text="{Binding Amount, StringFormat='£{0:N2}'}" 
                                        FontAttributes="Bold" 
-                                       FontSize="16"
+                                       FontSize="16" FontFamily="Oswald"
                                        />
                                 
                                 <!-- Category -->
                                 <Label Grid.Column="0" Grid.Row="1" 
                                        Text="{Binding CategoryName}" 
                                        FontSize="14" 
-                                       TextColor="Gray"/>
+                                       TextColor="Gray" FontFamily="Oswald"/>
                                 
                                 <!-- Date -->
                                 <Label Grid.Column="1" Grid.Row="1" 
                                        Text="{Binding Date, StringFormat='{0:MMM dd, yyyy}'}" 
                                        FontSize="14" 
-                                       TextColor="Gray"/>
+                                       TextColor="Gray" FontFamily="Oswald"/>
                             </Grid>
+                            
+                            <!-- Tap Gesture -->
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:ViewTransactionsViewModel}}, Path=ViewTransactionDetailsCommand}" 
+                                                      CommandParameter="{Binding}"/>
+                            </Frame.GestureRecognizers>
                         </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

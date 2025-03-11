@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
-using FrugalFoxBudgetApp.ViewModels;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FrugalFoxBudgetApp.ViewModels;
 
 namespace FrugalFoxBudgetApp.Views;
 
-public partial class ViewReportsPage : ContentPage
+public partial class ProfilePage : ContentPage
 {
-    public ViewReportsPage()
+    public ProfilePage()
     {
         InitializeComponent();
-        BindingContext = new ViewReportsViewModel();
+        BindingContext = new ProfilePageViewModel();
     }
 }
