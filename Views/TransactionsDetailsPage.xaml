@@ -2,7 +2,9 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:FrugalFoxBudgetApp.ViewModels"
              x:Class="FrugalFoxBudgetApp.Views.TransactionsDetailsPage">
+
     <ContentPage.Content>
         <StackLayout Padding="20" Spacing="15">
             <Label Text="Transaction Details" FontSize="24" HorizontalOptions="Center" FontFamily="Oswald"/>
@@ -26,8 +28,14 @@
             <!-- Edit Button -->
             <Button Text="Edit Transaction" 
                     Command="{Binding EditTransactionCommand}" 
-                    BackgroundColor="#EA4337" 
+                    BackgroundColor="Green" 
                     TextColor="White"/>
+            <Button Text="Delete Transaction" 
+                    Command="{Binding DeleteTransactionCommand}" 
+                    BackgroundColor="Red" 
+                    TextColor="White"
+                    Margin="0,10,0,0"/>
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

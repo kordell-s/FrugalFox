@@ -13,6 +13,8 @@ public partial class TransactionsDetailsPage : ContentPage
     public TransactionsDetailsPage(Transaction transaction)
     {
         InitializeComponent();
-        BindingContext = new TransactionDetailsViewModel(transaction);
+
+        this.BindingContext = new TransactionDetailsViewModel(transaction);
     }
+
 }

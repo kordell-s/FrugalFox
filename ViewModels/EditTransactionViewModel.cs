@@ -13,6 +13,11 @@ namespace FrugalFoxBudgetApp.ViewModels
         private readonly FrugalFoxDB Database;
         private Transaction transaction;
 
+        public EditTransactionViewModel()
+        {
+            
+        }
+
         public EditTransactionViewModel(Transaction existingTransaction)
         {
             Database = new FrugalFoxDB();
@@ -106,9 +111,9 @@ namespace FrugalFoxBudgetApp.ViewModels
             bool confirm = await Application.Current.MainPage.DisplayAlert(
                 "Confirm Delete", "Are you sure you want to delete this transaction?", "Yes", "No");
 
-            if (confirm)
+            if (confirm && Transaction != null) 
             {
-                Database.DeleteTransaction(Transaction.TransactionId);
+                Database.DeleteTransaction(Transaction); 
                 await Application.Current.MainPage.Navigation.PopAsync();
             }
         }

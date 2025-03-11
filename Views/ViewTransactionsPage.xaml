@@ -62,14 +62,8 @@
                     IsRefreshing="{Binding IsRefreshing}"
                     Command="{Binding RefreshCommand}">
             <CollectionView ItemsSource="{Binding Transactions}" 
-                          SelectionMode="Single">
-                <CollectionView.EmptyView>
-                    <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                        <Image Source="notransactions.png" HeightRequest="100" WidthRequest="100" />
-                        <Label Text="No transactions found" FontSize="18" HorizontalOptions="Center" Margin="0,10,0,0" />
-                        <!--<Button Text="Add Transaction" BackgroundColor="#EA4337" Command="{Binding AddTransactionCommand}" Margin="0,20,0,0" /> -->
-                    </StackLayout>
-                </CollectionView.EmptyView>
+                            SelectionMode="Single"
+                            SelectedItem="{Binding SelectedTransaction}"> 
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame Margin="0,0,0,10" BorderColor="LightGray" CornerRadius="8" Padding="10">
@@ -77,38 +71,36 @@
                                 <!-- Transaction Description -->
                                 <Label Grid.Column="0" Grid.Row="0" 
                                        Text="{Binding Title}" 
-                                       FontAttributes="Bold"  FontFamily="Oswald"
+                                       FontAttributes="Bold"  
+                                       FontFamily="Oswald"
                                        FontSize="16"/>
-                                
+
                                 <!-- Transaction Amount -->
                                 <Label Grid.Column="1" Grid.Row="0" 
                                        Text="{Binding Amount, StringFormat='£{0:N2}'}" 
                                        FontAttributes="Bold" 
-                                       FontSize="16" FontFamily="Oswald"
-                                       />
-                                
+                                       FontSize="16" 
+                                       FontFamily="Oswald"/>
+
                                 <!-- Category -->
                                 <Label Grid.Column="0" Grid.Row="1" 
                                        Text="{Binding CategoryName}" 
                                        FontSize="14" 
-                                       TextColor="Gray" FontFamily="Oswald"/>
-                                
+                                       TextColor="Gray" 
+                                       FontFamily="Oswald"/>
+
                                 <!-- Date -->
                                 <Label Grid.Column="1" Grid.Row="1" 
                                        Text="{Binding Date, StringFormat='{0:MMM dd, yyyy}'}" 
                                        FontSize="14" 
-                                       TextColor="Gray" FontFamily="Oswald"/>
+                                       TextColor="Gray" 
+                                       FontFamily="Oswald"/>
                             </Grid>
-                            
-                            <!-- Tap Gesture -->
-                            <Frame.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:ViewTransactionsViewModel}}, Path=ViewTransactionDetailsCommand}" 
-                                                      CommandParameter="{Binding}"/>
-                            </Frame.GestureRecognizers>
                         </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+
         </RefreshView>
         
         <!-- Add Transaction Floating Button -->

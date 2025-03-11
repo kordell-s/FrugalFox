@@ -20,11 +20,11 @@ public class ViewTransactionsViewModel: INotifyPropertyChanged
         LoadTransactions();
         LoadCategories();
         SearchCommand = new Command(OnSearch);
-        RefreshCommand = new Command(OnRefresh);
+        RefreshCommand = new Command(RefreshTransactions);
         DateRangeChangedCommand = new Command <object>(OnDateRangeChanged);
         TransactionSelectedCommand = new Command<IList>(OnTransactionSelected);
         AddTransactionCommand = new Command(OnAddTransaction);
-        ViewTransactionDetailsCommand = new Command<Transaction>(OnViewTransactionDetails);
+        ViewTransactionDetailsCommand = new Command<object>(OnViewTransactionDetails);
 
     }
     
@@ -37,20 +37,7 @@ public class ViewTransactionsViewModel: INotifyPropertyChanged
         set { dateRangeOptions = value; OnPropertyChanged(); }
     }
 
-    private string selectedDateRange = "This Month";
-    public string SelectedDateRange
-    {
-        get => selectedDateRange;
-        set 
-        { 
-            selectedDateRange = value; 
-            OnPropertyChanged();
-            LoadTransactions();
-        }
-    }
-
-    private Category selectedCategory;
-
+  
     public Category SelectedCategory
     {
         get => selectedCategory;
@@ -78,19 +65,77 @@ public class ViewTransactionsViewModel: INotifyPropertyChanged
     
     public ICommand SearchCommand { get; }
     public ICommand RefreshCommand { get; }
-    
     public ICommand DateRangeChangedCommand { get; }
     public ICommand TransactionSelectedCommand { get; }
     public ICommand AddTransactionCommand { get; }
-
     public ICommand ViewTransactionDetailsCommand { get; }
-
-    private async void OnViewTransactionDetails(Transaction transaction)
+    
+    private string selectedDateRange = "This Month";
+    public string SelectedDateRange
     {
-        if (transaction == null)
-            return;
-        await Application.Current.MainPage.Navigation.PushAsync(new TransactionsDetailsPage(transaction));
+        get => selectedDateRange;
+        set 
+        { 
+            selectedDateRange = value; 
+            OnPropertyChanged();
+            LoadTransactions();
+        }
     }
+    
+    private bool isRefreshing;
+    public bool IsRefreshing
+    {
+        get => isRefreshing;
+        set
+        {
+            isRefreshing = value;
+            OnPropertyChanged(nameof(IsRefreshing));
+        }
+    }
+
+    private Category selectedCategory;
+
+    private TransactionViewModel selectedTransaction;
+    public TransactionViewModel SelectedTransaction
+    {
+        get => selectedTransaction;
+        set
+        {
+            if (selectedTransaction != value)
+            {
+                selectedTransaction = value;
+                OnPropertyChanged();
+            
+                if (selectedTransaction != null)
+                {
+                    OnViewTransactionDetails(selectedTransaction);
+                }
+            }
+        }
+    }
+
+
+    
+    
+    private void RefreshTransactions()
+    {
+        IsRefreshing = true;
+        LoadTransactions(); 
+        IsRefreshing = false;
+    }
+    private async void OnViewTransactionDetails(object obj)
+    {
+        if (obj is TransactionViewModel transactionVM)
+        {
+            // Get the full Transaction from the database if needed
+            var transaction = Database.Query<Transaction>($"SELECT * FROM Transactions WHERE TransactionId = {transactionVM.TransactionId}").FirstOrDefault();
+            if (transaction != null)
+            {
+                await Application.Current.MainPage.Navigation.PushAsync(new TransactionsDetailsPage(transaction));
+            }
+        }
+    }
+
     private void OnDateRangeChanged(object parameter)
     {
         LoadTransactions();
@@ -196,11 +241,7 @@ public class ViewTransactionsViewModel: INotifyPropertyChanged
     {
         LoadTransactions();
     }
-
-    private void OnRefresh()
-    {
-        LoadTransactions();
-    }
+    
     
     
     public event PropertyChangedEventHandler PropertyChanged;
