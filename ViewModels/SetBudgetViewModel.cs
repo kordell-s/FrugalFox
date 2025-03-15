@@ -66,8 +66,10 @@ public class SetBudgetViewModel : INotifyPropertyChanged
     }
     
     public ICommand SaveBudgetCommand { get; }
-
-    private async void OnSaveBudget()
+    
+   private async void OnSaveBudget()
+{
+    try
     {
         if (MonthlyBudget <= 0)
         {
@@ -75,28 +77,69 @@ public class SetBudgetViewModel : INotifyPropertyChanged
             return;
         }
 
-        var budget = new Budget
+        Console.WriteLine($"[DEBUG] Checking existing budget for User ID: {App.CurrentUser.UserId}");
+
+        var existingBudget = Database.GetCurrentBudget(App.CurrentUser.UserId);
+
+        if (existingBudget != null)
         {
-            UserId = App.CurrentUser.UserId,
-            MonthlyBudget = MonthlyBudget,
-            StartDate = StartDate,
-            EndDate = EndDate,
-            CurrentSpent = 0
-        };
-        
-        int result = Database.CreateBudget(budget);
-        if (result > 0)
-        {
-            await Application.Current.MainPage.DisplayAlert("Success", "Budget added.", "OK");
-            WeakReferenceMessenger.Default.Send(new BudgetUpdatedMessage(true));
-            await Application.Current.MainPage.Navigation.PopAsync();
+            // Update existing budget
+            Console.WriteLine("[DEBUG] Updating existing budget...");
+
+            existingBudget.MonthlyBudget = MonthlyBudget;
+            existingBudget.StartDate = StartDate;
+            existingBudget.EndDate = EndDate;
+
+            int result = Database.UpdateBudget(existingBudget);
+
+            if (result > 0)
+            {
+                await Application.Current.MainPage.DisplayAlert("Success", "Budget updated.", "OK");
+                WeakReferenceMessenger.Default.Send(new BudgetUpdatedMessage(true));
+
+            }
+            else
+            {
+                throw new Exception("Database update operation failed.");
+            }
         }
         else
         {
-            await Application.Current.MainPage.DisplayAlert("Error", "Budget not added.", "OK");
+            // Create new budget
+            Console.WriteLine("[DEBUG] Creating new budget...");
+
+            var newBudget = new Budget
+            {
+                UserId = App.CurrentUser.UserId,
+                MonthlyBudget = MonthlyBudget,
+                StartDate = StartDate,
+                EndDate = EndDate,
+                CurrentSpent = 0
+            };
+
+            int result = Database.CreateBudget(newBudget);
+
+            if (result > 0)
+            {
+                await Application.Current.MainPage.DisplayAlert("Success", "Budget added.", "OK");
+                WeakReferenceMessenger.Default.Send(new BudgetUpdatedMessage(true));
+
+            }
+            else
+            {
+                throw new Exception("Database insert operation failed.");
+            }
         }
+        
+        Console.WriteLine("[DEBUG] Budget saved successfully. Navigating back...");
+        await Application.Current.MainPage.Navigation.PopAsync();
     }
-    
+    catch (Exception ex)
+    {
+        Console.WriteLine($"[ERROR] Exception occurred: {ex.Message}");
+        await Application.Current.MainPage.DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
+    }
+}
     
     public event PropertyChangedEventHandler? PropertyChanged;
     protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

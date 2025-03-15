@@ -6,6 +6,7 @@ using Microsoft.Maui.Controls;
 using System;
 using CommunityToolkit.Mvvm.Messaging;
 using FrugalFoxBudgetApp.Database;
+using FrugalFoxBudgetApp.Messages;
 using FrugalFoxBudgetApp.Models;
 using FrugalFoxBudgetApp.Views;
 using SQLite;
@@ -120,8 +121,7 @@ public class DashboardPageViewModel:INotifyPropertyChanged
 
         if (App.CurrentUser != null)
         {
-
-
+            
             userID = App.CurrentUser.UserId;
             var user = Database.GetUserByEmail(App.CurrentUser.Email);
             Greeting = user != null ? $"Hello, {user.FirstName}!" : "User not found.";
@@ -135,7 +135,13 @@ public class DashboardPageViewModel:INotifyPropertyChanged
             BudgetStatus = "No active user";
             RecentTransactions = new ObservableCollection<TransactionViewModel>();
         }
-
+        
+        // Registering listener for budget updates
+        WeakReferenceMessenger.Default.Register<BudgetUpdatedMessage>(this, (recipient, message) =>
+        {
+            LoadCurrentBudget();  // Reload budget when update is detected
+            OnPropertyChanged(nameof(RemainingBalance));
+        });
         
         AddTransactionCommand = new Command(OnAddTransaction);
         ViewReportsCommand = new Command(OnViewReports);
@@ -163,6 +169,12 @@ public class DashboardPageViewModel:INotifyPropertyChanged
             UpdateBudgetStatus();
             UpdateChartData();
             OnPropertyChanged(nameof(RemainingBalance));
+            
+            // To Ensure UI refreshes
+            OnPropertyChanged(nameof(RemainingBalance));
+            OnPropertyChanged(nameof(MonthlyBudget));
+            OnPropertyChanged(nameof(BudgetStatus));
+            OnPropertyChanged(nameof(ChartData));
 
         }
         else

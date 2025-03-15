@@ -8,7 +8,6 @@
       <vm:DashboardPageViewModel/>
   </ContentPage.BindingContext>
 
-  <!-- Use a Grid with overlapping children -->
   <Grid>
     <!-- Main content in a ScrollView -->
     <ScrollView>
@@ -53,13 +52,19 @@
                   <syncfusion:CircularDataLabelSettings.LabelStyle>
                     <syncfusion:ChartDataLabelStyle FontSize="14" 
                                                     FontAttributes="Bold"
-                                                    LabelFormat="${Value} ({Percent}%)" />
+                                                    LabelFormat="${Value} ({Percent}%)"
+                                                    TextColor="White"/>
                   </syncfusion:CircularDataLabelSettings.LabelStyle>
                 </syncfusion:CircularDataLabelSettings>
               </syncfusion:DoughnutSeries.DataLabelSettings>
             </syncfusion:DoughnutSeries>
           </syncfusion:SfCircularChart.Series>
         </syncfusion:SfCircularChart>
+        
+        <syncfusion:SfCircularChart.Legend>
+          <syncfusion:ChartLegend ToggleSeriesVisibility="True"
+                                  LabelStyle="{StaticResource LegendLabelStyle}" />
+        </syncfusion:SfCircularChart.Legend>
 
         <!-- Recent Transactions Header -->
         <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center">
@@ -90,7 +95,7 @@
                     <Image Source="{Binding CategoryIcon}" 
                            WidthRequest="20" 
                            HeightRequest="20" 
-                           Margin="0,0,5,0" />
+                           Margin="0,0,5,0" BackgroundColor="White"/>
                     <Label Text="{Binding Title}" FontAttributes="Bold" FontFamily="Oswald"/>
                     <Label Text="{Binding Amount, StringFormat='{}{0:C}'}" FontFamily="Oswald"
                            FontAttributes="Bold" 
@@ -122,4 +127,13 @@
             HorizontalOptions="End"
             VerticalOptions="End"/>
   </Grid>
+  
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <syncfusion:ChartLegendLabelStyle x:Key="LegendLabelStyle"
+                                        TextColor="White"
+                                        FontSize="14"
+                                        FontAttributes="Bold"/>
+    </ResourceDictionary>
+  </ContentPage.Resources>
 </ContentPage>

@@ -4,106 +4,162 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using FrugalFoxBudgetApp.Database;
 using FrugalFoxBudgetApp.Models;
-using Microsoft.Maui.Controls;
+using FrugalFoxBudgetApp.Views;
 
 namespace FrugalFoxBudgetApp.ViewModels
 {
     public class EditTransactionViewModel : INotifyPropertyChanged
     {
         private readonly FrugalFoxDB Database;
-        private Transaction transaction;
+        private Transaction _transaction;
 
+        // Default constructor for XAML previewer
         public EditTransactionViewModel()
         {
-            
+            // Initialize with empty transaction to prevent null reference exceptions
+            _transaction = new Transaction();
+            Database = new FrugalFoxDB();
+            LoadCategories();
         }
 
         public EditTransactionViewModel(Transaction existingTransaction)
         {
             Database = new FrugalFoxDB();
-            Transaction = existingTransaction;
+            _transaction = existingTransaction;
+            
+            // Load categories first, so SelectedCategory can be set
+            LoadCategories();
+            
+            // Set selected category after categories are loaded
+            SelectedCategory = Categories.FirstOrDefault(c => c.CategoryId == _transaction.CategoryId);
 
             SaveCommand = new Command(OnSaveTransaction);
             DeleteCommand = new Command(OnDeleteTransaction);
         }
 
+        // Transaction property
         public Transaction Transaction
         {
-            get => transaction;
+            get => _transaction;
             set
             {
-                if (transaction != value)
+                if (_transaction != value)
                 {
-                    transaction = value;
+                    _transaction = value;
                     OnPropertyChanged();
                 }
             }
         }
 
+        // Title property
         public string Title
         {
-            get => Transaction.Title;
+            get => _transaction?.Title ?? string.Empty;
             set
             {
-                if (Transaction.Title != value)
+                if (_transaction.Title != value)
                 {
-                    Transaction.Title = value;
+                    _transaction.Title = value;
                     OnPropertyChanged();
                 }
             }
         }
 
+        // Amount property
         public decimal Amount
         {
-            get => Transaction.Amount;
+            get => _transaction?.Amount ?? 0;
             set
             {
-                if (Transaction.Amount != value)
+                if (_transaction.Amount != value)
                 {
-                    Transaction.Amount = value;
+                    _transaction.Amount = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        public string SelectedCategory
+        private Category _selectedCategory;
+        public Category SelectedCategory
         {
-            get => Transaction.CategoryName;
+            get => _selectedCategory;
             set
             {
-                if (Transaction.CategoryName != value)
+                if (_selectedCategory != value)
                 {
-                    Transaction.CategoryName = value;
+                    _selectedCategory = value;
+                    
+                    // Update the transaction's CategoryId and CategoryName when category changes
+                    if (_selectedCategory != null)
+                    {
+                        _transaction.CategoryId = _selectedCategory.CategoryId;
+                        _transaction.CategoryName = _selectedCategory.Name;
+                    }
+                    
                     OnPropertyChanged();
                 }
             }
         }
 
+        // Date property
         public DateTime Date
         {
-            get => Transaction.Date;
+            get => _transaction?.Date ?? DateTime.Now;
             set
             {
-                if (Transaction.Date != value)
+                if (_transaction.Date != value)
                 {
-                    Transaction.Date = value;
+                    _transaction.Date = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        public ObservableCollection<string> Categories { get; set; } = new ObservableCollection<string>
-        {
-            "Food", "Transport", "Entertainment", "Utilities", "Other"
-        };
+        // Categories collection
+        public ObservableCollection<Category> Categories { get; set; } = new ObservableCollection<Category>();
 
         public ICommand SaveCommand { get; }
         public ICommand DeleteCommand { get; }
 
         private async void OnSaveTransaction()
         {
-            Database.UpdateTransaction(Transaction);
-            await Application.Current.MainPage.Navigation.PopAsync();
+            // Ensure we have a valid category selected
+            if (SelectedCategory == null)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Please select a category", "OK");
+                return;
+            }
+
+            // Update transaction with current SelectedCategory info
+            _transaction.CategoryId = SelectedCategory.CategoryId;
+            _transaction.CategoryName = SelectedCategory.Name;
+
+            // Try to update the transaction
+            try
+            {
+                
+                Database.UpdateTransaction(_transaction);
+                await Application.Current.MainPage.Navigation.PushAsync(new ViewTransactionsPage());
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", $"Failed to save: {ex.Message}", "OK");
+            }
+        }
+
+        private void LoadCategories()
+        {
+            try
+            {
+                var categoryList = Database.Query<Category>("SELECT * FROM Categories");
+                Categories = new ObservableCollection<Category>(categoryList);
+                OnPropertyChanged(nameof(Categories));
+            }
+            catch (Exception ex)
+            {
+                // Handle exception (could log or show message)
+                System.Diagnostics.Debug.WriteLine($"Error loading categories: {ex.Message}");
+            }
         }
 
         private async void OnDeleteTransaction()
@@ -111,10 +167,18 @@ namespace FrugalFoxBudgetApp.ViewModels
             bool confirm = await Application.Current.MainPage.DisplayAlert(
                 "Confirm Delete", "Are you sure you want to delete this transaction?", "Yes", "No");
 
-            if (confirm && Transaction != null) 
+            if (confirm && _transaction != null) 
             {
-                Database.DeleteTransaction(Transaction); 
-                await Application.Current.MainPage.Navigation.PopAsync();
+                try
+                {
+                    
+                    Database.DeleteTransaction(_transaction);
+                    await Application.Current.MainPage.Navigation.PopAsync();
+                }
+                catch (Exception ex)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", $"Failed to delete: {ex.Message}", "OK");
+                }
             }
         }
 

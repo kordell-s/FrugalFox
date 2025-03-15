@@ -1,41 +1,96 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:FrugalFoxBudgetApp.ViewModels"
-             x:Class="FrugalFoxBudgetApp.Views.TransactionsDetailsPage">
+             x:Class="FrugalFoxBudgetApp.Views.TransactionsDetailsPage"
+             Title="Transaction Details">
 
     <ContentPage.Content>
-        <StackLayout Padding="20" Spacing="15">
-            <Label Text="Transaction Details" FontSize="24" HorizontalOptions="Center" FontFamily="Oswald"/>
-            
-            <!-- Transaction Title -->
-            <Label Text="Title" FontSize="18" FontAttributes="Bold"/>
-            <Label Text="{Binding Title}" FontSize="16" FontFamily="Oswald"/>
-            
-            <!-- Amount -->
-            <Label Text="Amount" FontSize="18" FontAttributes="Bold"/>
-            <Label Text="{Binding Amount, StringFormat='£{0:N2}'}" FontSize="16" FontFamily="Oswald"/>
-            
-            <!-- Category -->
-            <Label Text="Category" FontSize="18" FontAttributes="Bold"/>
-            <Label Text="{Binding CategoryName}" FontSize="16" FontFamily="Oswald"/>
-            
-            <!-- Date -->
-            <Label Text="Date" FontSize="18" FontAttributes="Bold"/>
-            <Label Text="{Binding Date, StringFormat='{0:MMM dd, yyyy}'}" FontSize="16" FontFamily="Oswald"/>
+        <ScrollView>
+            <StackLayout Padding="20" Spacing="20">
 
-            <!-- Edit Button -->
-            <Button Text="Edit Transaction" 
-                    Command="{Binding EditTransactionCommand}" 
-                    BackgroundColor="Green" 
-                    TextColor="White"/>
-            <Button Text="Delete Transaction" 
-                    Command="{Binding DeleteTransactionCommand}" 
-                    BackgroundColor="Red" 
-                    TextColor="White"
-                    Margin="0,10,0,0"/>
+                <Label Text="Transaction Details" 
+                       FontSize="24" 
+                       FontAttributes="Bold" 
+                       FontFamily="Oswald"
+                       HorizontalOptions="Center"/>
 
-        </StackLayout>
+                <!-- Transaction Title -->
+                <Frame BorderColor="LightGray" Padding="10" CornerRadius="8">
+                    <StackLayout Spacing="5">
+                        <Label Text="Title" 
+                               FontAttributes="Bold" 
+                               FontFamily="Oswald" 
+                               FontSize="16"/>
+                        <Label Text="{Binding Title}" 
+                               FontSize="18" 
+                               FontFamily="Oswald"/>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Transaction Amount -->
+                <Frame BorderColor="LightGray" Padding="10" CornerRadius="8">
+                    <StackLayout Spacing="5">
+                        <Label Text="Amount" 
+                               FontAttributes="Bold" 
+                               FontFamily="Oswald" 
+                               FontSize="16"/>
+                        <Label Text="{Binding Amount, StringFormat='£{0:N2}'}" 
+                               FontSize="18" 
+                               FontFamily="Oswald"
+                               />
+                    </StackLayout>
+                </Frame>
+
+                <!-- Transaction Category -->
+                <Frame BorderColor="LightGray" Padding="10" CornerRadius="8">
+                    <StackLayout Spacing="5">
+                        <Label Text="Category" 
+                               FontAttributes="Bold" 
+                               FontFamily="Oswald" 
+                               FontSize="16"/>
+                        <Label Text="{Binding CategoryName}" 
+                               FontSize="18" 
+                               FontFamily="Oswald"/>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Transaction Date -->
+                <Frame BorderColor="LightGray" Padding="10" CornerRadius="8">
+                    <StackLayout Spacing="5">
+                        <Label Text="Date" 
+                               FontAttributes="Bold" 
+                               FontFamily="Oswald" 
+                               FontSize="16"/>
+                        <Label Text="{Binding Date, StringFormat='{0:MMM dd, yyyy}'}" 
+                               FontSize="18" 
+                               FontFamily="Oswald"/>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Edit & Delete Buttons -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="15" Margin="0,10,0,0">
+                    <Button Grid.Column="0"
+                            Text="Edit Transaction" 
+                            Command="{Binding EditTransactionCommand}" 
+                            BackgroundColor="#EA4337"
+                            TextColor="White"
+                            FontFamily="Oswald"
+                            FontSize="16"
+                            Padding="0,10"
+                            CornerRadius="8"/>
+                    
+                    <Button Grid.Column="1"
+                            Text="Delete Transaction" 
+                            Command="{Binding DeleteTransactionCommand}" 
+                            BackgroundColor="#555555"
+                            TextColor="White"
+                            FontFamily="Oswald"
+                            FontSize="16"
+                            Padding="0,10"
+                            CornerRadius="8"/>
+                </Grid>
+
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

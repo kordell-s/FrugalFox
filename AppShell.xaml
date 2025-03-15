@@ -7,9 +7,10 @@
     xmlns:views="clr-namespace:FrugalFoxBudgetApp.Views"
     Shell.FlyoutBehavior="Disabled"
     Title="FrugalFoxBudgetApp"
-    Shell.TabBarBackgroundColor="White"
     Shell.TabBarForegroundColor="Gray"
-    Shell.TabBarUnselectedColor="Gray">
+    Shell.TabBarUnselectedColor="Gray"
+    >
+
 
     <ShellContent
         Title="Home"

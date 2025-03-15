@@ -5,6 +5,7 @@ namespace FrugalFoxBudgetApp.Models;
 [SQLite.Table("Budgets")]
 public class Budget
 {
+    [PrimaryKey, AutoIncrement]
     public int BudgetId { get; set; }
     public int UserId { get; set; }
     public decimal MonthlyBudget { get; set; }

@@ -13,11 +13,7 @@
             <!-- User Name -->
             <Label Text="Full Name" FontSize="16" FontAttributes="Bold" FontFamily="Oswald"/>
             <Entry Text="{Binding Name}" Placeholder="Enter your name"/>
-
-            <!-- Email -->
-            <Label Text="Email" FontSize="16" FontAttributes="Bold" FontFamily="Oswald"/>
-            <Entry Text="{Binding Email}" Placeholder="Enter your email" IsEnabled="False"/>
-
+            
             <!-- Change Password -->
             <Label Text="New Password" FontSize="16" FontAttributes="Bold" FontFamily="Oswald"/>
             <Entry Text="{Binding NewPassword}" Placeholder="Enter new password" IsPassword="True"/>
